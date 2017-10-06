@@ -7,14 +7,14 @@ public class MainClass {
 		Tractor tr = new Tractor();
 		Field f = new Field(); 
 		readFile(tr, f);
+		int [][]field = f.getField();
 		
-		int [][] field = f.getField();
-		/*System.out.print(field.length);
-		for(int i=0; i<field.length; i++) {
-			for (int j=0; j<field.length; i++) {
-				System.out.print(field[i][j]);
+		for (int i1=0; i1<field.length; i1++) {
+			for(int j=0; j<field.length; j++) {
+				System.out.print(field[i1][j]);
 			}
-		}*/
+			System.out.println();
+		}
 	}
 	
 	
@@ -65,12 +65,7 @@ public class MainClass {
 				}
 			}
 			
-			for (int i1=0; i1<aux_field.length; i1++) {
-				for(int j=0; j<aux_field.length; j++) {
-					System.out.print(aux_field[i1][j]);
-				}
-				System.out.println();
-			}
+			f.setField(aux_field);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
