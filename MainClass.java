@@ -16,7 +16,7 @@ public class MainClass {
 			System.out.println();
 		}
 		
-		moveTractor(tr);
+		moveTractor(tr,f);
 	}
 	
 	
@@ -80,97 +80,25 @@ public class MainClass {
 		read.close();
 	}
 	
-	public static void moveTractor (Tractor tr){
-		int n1, n2;
-		Scanner read = new Scanner(System.in);
-		
-		if (tr.getX() == 0 && tr.getY() == 2){ //Current position (0,2)
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 1 && n2 == 2) || (n1 == 0 && n2 == 1)){
-				tr.setX(n1);
-				tr.setY(n2);
+	
+	public static void moveTractor (Tractor t, Field f) {
+		if (0 <= t.getX() && t.getX() < f.getN_rows()) {
+			if(t.getX() + 1 < f.getN_rows()) {
+				System.out.println("You can move to the south");
+			}
+			
+			if(t.getX() - 1 >= 0) {
+				System.out.println("You can move to the north");
 			}
 		}
 		
-		if (tr.getX() == 0 && tr.getY() == 1){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 0 && n2 == 0) || (n1 == 1 && n2 == 1) || (n1 == 0 && n2 == 2)){
-				tr.setX(n1);
-				tr.setY(n2);
+		if (0 <= t.getY() && t.getY() < f.getN_cols()) {
+			if(t.getY() + 1 < f.getN_cols()) {
+				System.out.println("You can move to the right");
 			}
-		}
-		
-		if (tr.getX() == 0 && tr.getY() == 0){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 0 && n2 == 1) || (n1 == 1 && n2 == 0)){
-				tr.setX(n1);
-				tr.setY(n2);
-			}
-		}
-		
-		if (tr.getX() == 1 && tr.getY() == 0){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 0 && n2 == 0) || (n1 == 2 && n2 == 0) || (n1 == 1 && n2 == 1)){
-				tr.setX(n1);
-				tr.setY(n2);
-			}
-		}
-		
-		if (tr.getX() == 1 && tr.getY() == 1){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 1 && n2 == 0) || (n1 == 0 && n2 == 1) || (n1 == 2 && n2 == 1) || (n1 == 1 && n2 == 2)){
-				tr.setX(n1);
-				tr.setY(n2);
-			}
-		}
-		
-		if (tr.getX() == 1 && tr.getY() == 2){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 0 && n2 == 2) || (n1 == 1 && n2 == 1) || (n1 == 2 && n2 == 2)){
-				tr.setX(n1);
-				tr.setY(n2);
-			}
-		}
-		
-		if (tr.getX() == 2 && tr.getY() == 0){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 1 && n2 == 0) || (n1 == 2 && n2 == 1)){
-				tr.setX(n1);
-				tr.setY(n2);
-			}
-		}
-		
-		if (tr.getX() == 2 && tr.getY() == 1){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 2 && n2 == 0) || (n1 == 1 && n2 == 1) || (n1 == 2 && n2 == 2)){
-				tr.setX(n1);
-				tr.setY(n2);
-			}
-		}
-		
-		if (tr.getX() == 2 && tr.getY() == 2){
-			System.out.println("Select the direction");
-			n1 = read.nextInt();
-			n2 = read.nextInt();
-			if ((n1 == 2 && n2 == 1) || (n1 == 1 && n2 == 2)){
-				tr.setX(n1);
-				tr.setY(n2);
+			
+			if(t.getY() - 1 >= 0) {
+				System.out.println("You can move to the left");
 			}
 		}
 	}
