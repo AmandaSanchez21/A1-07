@@ -1,6 +1,7 @@
 
 public class Field {
 	private int n_rows, n_cols, K, max;
+	private int [][] field;
 	
 	public Field () {
 		this.n_rows = 0;
@@ -15,6 +16,14 @@ public class Field {
 
 	public void setN_rows(int n_rows) {
 		this.n_rows = n_rows;
+	}
+
+	public int[][] getField() {
+		return field;
+	}
+
+	public void setField(int[][] field) {
+		this.field = field;
 	}
 
 	public int getN_cols() {
