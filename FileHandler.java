@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class FileHandler {
-	public static void readFile (Tractor t, Field f) throws IOException {
+	public static void readFile (Tractor t, Field f) throws IOException, InputExceptions {
 		Scanner read = new Scanner(System.in);
 		System.out.println("Enter the name of the .txt");
 		String file = read.nextLine() + ".txt";
@@ -26,26 +26,30 @@ public class FileHandler {
 				
 				switch(n_line) {
 				case 1 :
-					t.setX(Integer.parseInt(aux[0]));
-					t.setY(Integer.parseInt(aux[1]));
-					f.setK(Integer.parseInt(aux[2]));
-					f.setMax(Integer.parseInt(aux[3]));
-					f.setN_cols(Integer.parseInt(aux[4]));
-					f.setN_rows(Integer.parseInt(aux[5]));
+					try {
+						t.setX(Integer.parseInt(aux[0]));
+						t.setY(Integer.parseInt(aux[1]));
+						f.setK(Integer.parseInt(aux[2]));
+						f.setMax(Integer.parseInt(aux[3]));
+						f.setN_cols(Integer.parseInt(aux[4]));
+						f.setN_rows(Integer.parseInt(aux[5]));
+						
+					} catch (Exception e) {
+						throw new InputExceptions("Letter");
+					}
 					
 					aux_field = new int[f.getN_rows()][f.getN_cols()];
-					for (int i=0; i<aux_field.length; i++) {
-						for(int j=0; j<aux_field.length; j++) {
-							aux_field[i][j] = 0;
-						}
-					}
 					
 					break;
 				
 				default:
 					int i = n_line-2;
 					for (int j=0; j<aux_field.length;j++) {
-						aux_field[i][j] = Integer.parseInt(aux[j+1]);
+						try {
+							aux_field[i][j] = Integer.parseInt(aux[j+1]);
+						} catch (Exception e) {
+							throw new InputExceptions("Letter");
+						}
 					}
 				}
 			}
@@ -53,8 +57,6 @@ public class FileHandler {
 			f.setField(aux_field);
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			bf.close();
