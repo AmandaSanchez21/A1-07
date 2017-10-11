@@ -91,7 +91,8 @@ public class Action {
 		
 		return actions;
 	}
-		
+	
+	
 	
 	public static int[] generate_combinations(int num) {
 		int[] comb = new int[4];
