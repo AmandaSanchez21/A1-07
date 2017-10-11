@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tractor {
 
@@ -31,6 +33,36 @@ public class Tractor {
 
 	public void setY(int y) {
 		Y = y;
+	}
+	
+	public static List<Movement> moveTractor (Tractor t, Field f) {
+		List <Movement> pos_moves = new ArrayList <Movement>();
+		
+		if (0 <= t.getX() && t.getX() < f.getN_rows()) {
+			if(t.getX() + 1 < f.getN_rows()) {
+				Movement s = new Movement (t.getX() +1, t.getY());
+				pos_moves.add(s);
+			}
+			
+			if(t.getX() - 1 >= 0) {
+				Movement n = new Movement(t.getX() -1, t.getY());
+				pos_moves.add(n);
+			}
+		}
+		
+		if (0 <= t.getY() && t.getY() < f.getN_cols()) {
+			if(t.getY() + 1 < f.getN_cols()) {
+				Movement e = new Movement(t.getX(), t.getY()+1);
+				pos_moves.add(e);
+			}
+			
+			if(t.getY() - 1 >= 0) {
+				Movement w = new Movement (t.getX(), t.getY()-1);
+				pos_moves.add(w);
+			}
+		}
+		
+		return pos_moves;
 	}
 	
 
