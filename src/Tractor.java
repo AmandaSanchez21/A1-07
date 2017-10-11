@@ -63,10 +63,5 @@ public class Tractor {
 		}
 		
 		return pos_moves;
-	}
-	
-
-	
-	
-	
+	}	
 }

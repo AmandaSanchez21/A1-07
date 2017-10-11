@@ -12,10 +12,6 @@ public class Action {
 		this.sand_e = e;
 		this.sand_w = w;
 	}
-	
-	public Action () {
-	
-	}
 
 	public Movement getNext_move() {
 		return next_move;
@@ -91,9 +87,7 @@ public class Action {
 		
 		return actions;
 	}
-	
-	
-	
+		
 	public static int[] generate_combinations(int num) {
 		int[] comb = new int[4];
 	    int i = 0;
@@ -106,6 +100,5 @@ public class Action {
 	     
 	    return comb;
 	}
-	
 	
 }
