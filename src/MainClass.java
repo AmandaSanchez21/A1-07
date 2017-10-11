@@ -26,10 +26,11 @@ public class MainClass {
 		
 		List<Action> actions = decideActions(tr,f);
 		System.out.println();
-		/*for(int i=0; i<actions.size(); i++) {
+		System.out.println("Possible actions: ");
+		for(int i=0; i<actions.size(); i++) {
 			System.out.println("[(" + actions.get(i).getNext_move().getX() + "," + actions.get(i).getNext_move().getY() + ")"  + " N:" +
 		actions.get(i).getSand_n() + " S:" + actions.get(i).getSand_s() + " E:" + actions.get(i).getSand_e() + " W:" + actions.get(i).getSand_w() + "]");
-		}*/
+		}
 	}
 	
 	
@@ -72,17 +73,9 @@ public class MainClass {
 		int [][] field = f.getField();
 		int [] aux = new int[4];
 		
-		for (int i=0; i<=n_combs; i++) {
+		for (int i=0; i<=n_combs; i++) {     
 			combinations.add(generate_combinations(i));
 		}
-		
-		for(int i=0; i<combinations.size();i++) {
-	    	int[] aux1 = combinations.get(i);
-	    	for (int j=0; j<aux1.length;j++) {
-	    		System.out.print(aux1[j]);
-	    	}
-	    	System.out.println();
-	    }
 		
 		for (int i=0; i<moves.size(); i++) {
 			for (int j=0; j<combinations.size(); j++) {
