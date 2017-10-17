@@ -5,7 +5,7 @@ public class Action {
 	private Movement next_move;
 	private int sand_n, sand_s, sand_w, sand_e;
 	
-	public Action (Movement nm, int n, int s, int w, int e) {
+	public Action (Movement nm, int n, int s, int e, int w) {
 		this.next_move = nm;
 		this.sand_s = s;
 		this.sand_n = n;
@@ -73,7 +73,7 @@ public class Action {
 				t.setCurrent_sand(field[t.getX()][t.getY()] - f.getK());
 				int sand = t.getCurrent_sand();
 				
-				if(sum_sand==sand && sum_sand>0) {
+				if(sum_sand==sand && sum_sand>0) { //真真真真真真真真  sum_sand>0 ????????????
 					Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
 					Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
 					actions.add(ac);
