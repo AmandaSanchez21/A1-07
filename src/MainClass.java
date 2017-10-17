@@ -9,6 +9,8 @@ public class MainClass {
 		FileHandler.readFile(tr, f);
 		int [][]field = f.getField();
 		
+		System.out.println();
+		
 		for (int i1=0; i1<field.length; i1++) {
 			for(int j=0; j<field.length; j++) {
 				System.out.print(field[i1][j]);
@@ -28,6 +30,7 @@ public class MainClass {
 		List<Action> actions = Action.decideActions(tr,f);
 		System.out.println();
 		System.out.println();
+		
 		System.out.println("Possible actions: ");
 		for(int i=0; i<actions.size(); i++) {
 			System.out.println("[(" + actions.get(i).getNext_move().getX() + "," + actions.get(i).getNext_move().getY() + ")"  + " N:" +

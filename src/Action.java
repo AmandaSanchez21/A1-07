@@ -56,14 +56,10 @@ public class Action {
 	public static List<Action> decideActions(Tractor t, Field f) {
 		List<Movement> moves = Tractor.moveTractor (t,f);
 		List<Action> actions = new ArrayList<Action>();
-		int n_combs = f.getMax()*1000 + f.getMax()*100 + f.getMax()*10 + f.getMax();
-		List <int[]> combinations = new ArrayList<int[]> ();
+		List<int[]> combinations = generate_combinations(f.getMax());
+		
 		int [][] field = f.getField();
 		int [] aux = new int[4];
-		
-		for (int i=0; i<=n_combs; i++) {     
-			combinations.add(generate_combinations(i));
-		}
 		
 		for (int i=0; i<moves.size(); i++) {
 			for (int j=0; j<combinations.size(); j++) {
@@ -88,17 +84,20 @@ public class Action {
 		return actions;
 	}
 		
-	public static int[] generate_combinations(int num) {
-		int[] comb = new int[4];
-	    int i = 0;
-	   
-	     do {
-	        comb[i] = (num % 10);
-	        num = num/10;
-	        i++;
-	    } while(num > 0);
-	     
-	    return comb;
+	public static List<int[]> generate_combinations(int max) {
+		List <int[]> combinations = new ArrayList<int[]> ();
+		
+	    for(int i=0; i<=max; i++) {
+			for (int j=0; j<=max; j++) {
+				for (int s=0; s<=max; s++) {
+					for (int c=0; c<=max;c++) {
+						int [] comb = {i,j,s,c};
+						combinations.add(comb);
+					}
+				}
+			}
+	    }   
+	    return combinations;
 	}
 	
 }
