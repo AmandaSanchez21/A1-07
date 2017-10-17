@@ -74,9 +74,11 @@ public class Action {
 				int sand = t.getCurrent_sand();
 				
 				if(sum_sand==sand && sum_sand>0) { //真真真真真真真真  sum_sand>0 ????????????
-					Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
-					Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
-					actions.add(ac);
+					if (move_Sand(f,t,aux)) {
+						Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
+						Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
+						actions.add(ac);
+					}
 				}
 			}
 		}
@@ -98,6 +100,22 @@ public class Action {
 			}
 	    }   
 	    return combinations;
+	}
+	
+	public static boolean move_Sand (Field f, Tractor t, int [] sand) {
+		int [][] field = f.getField();
+		
+		if (field[t.getX() - 1] [t.getY()] + sand [0] > f.getMax()) {
+			return false;
+		} else if (field[t.getX() + 1] [t.getY()] + sand [1] > f.getMax()) {
+			return false;
+		} else if (field[t.getX()] [t.getY() + 1] + sand [2] > f.getMax()) {
+			return false;
+		} else if (field[t.getX()] [t.getY() - 1] + sand [3] > f.getMax()) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 }
