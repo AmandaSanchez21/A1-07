@@ -4,6 +4,7 @@ import java.util.*;
 public class State {
 	private int n_rows, n_cols, K, max, current_sand, X, Y; 
 	private int [][] field;
+	private List<Node> frontier;
 	
 	
 	
@@ -68,6 +69,13 @@ public class State {
 		this.field = field;
 	}
 	
+	public List<Node> getFrontier() {
+		return frontier;
+	}
+
+	public void setFrontier(List<Node> frontier) {
+		this.frontier = frontier;
+	}
 	
 	
 	
@@ -122,7 +130,7 @@ public class State {
 				t.setCurrent_sand(field[t.getX()][t.getY()] - t.getK());
 				int sand = t.getCurrent_sand();
 				
-				if(sum_sand==sand && sum_sand>0) { //真真真真真真真真  sum_sand>0 ????????????
+				if(sum_sand==sand && sum_sand>0) { //多多多多多多多多多多多多多多多多  sum_sand>0 ????????????
 					if (move_Sand(t,aux)) {
 						Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
 						Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
@@ -167,6 +175,10 @@ public class State {
 		return true;
 	}
 	
+	public List<Node> createFrontier(){
+		//Order criteria?多
+		return frontier;
+	}
 	
 
 }
