@@ -40,6 +40,8 @@ public class Problem {
 			System.out.println("[(" + actions.get(i).getNext_move().getX() + "," + actions.get(i).getNext_move().getY() + ")"  + " N:" +
 		actions.get(i).getSand_n() + " S:" + actions.get(i).getSand_s() + " E:" + actions.get(i).getSand_e() + " W:" + actions.get(i).getSand_w() + "]");
 		}
+		
+		List<Node> frontier = t.createFrontier();
 	}	
 	
 }
