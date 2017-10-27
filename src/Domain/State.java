@@ -176,7 +176,7 @@ public class State {
 	}
 	
 	public List<Node> createFrontier(){
-		Collections.sort(frontier);
+		Collections.sort(frontier); //It doesn't work like this (?)
 		return frontier;
 	}
 	
