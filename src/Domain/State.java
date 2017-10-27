@@ -4,7 +4,7 @@ import java.util.*;
 public class State {
 	private int n_rows, n_cols, K, max, current_sand, X, Y; 
 	private int [][] field;
-	private List<Node> frontier;
+	private List<Node> frontier = new ArrayList<Node>();
 	
 	
 	
@@ -176,7 +176,7 @@ public class State {
 	}
 	
 	public List<Node> createFrontier(){
-		//Order criteria?¿
+		Collections.sort(frontier);
 		return frontier;
 	}
 	
