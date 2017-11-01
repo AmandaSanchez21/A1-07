@@ -45,12 +45,21 @@ public class Problem {
 		
 		Node initialState = new Node();
 		initialState.setState(t);
-		
 		frontier.offer(initialState);
 		
+		double max = 0;
+		double min = 10000000;
+		double average=0;
+		double time1 = System.currentTimeMillis();
+		double time2;
+		double t_time = 0;
+		
+		List<Double> times = new ArrayList<Double>();
+		
 		while(!frontier.isEmpty() && !isGoal(frontier.peek().getState())) {
+			
+
 			actions = State.successor(frontier.peek().getState());
-			System.out.println("actions " + actions.size());
 			State newState = new State();
 			State currentState = frontier.poll().getState();
 			
@@ -61,10 +70,25 @@ public class Problem {
 				Node aux = new Node();
 				aux.setState(newState);
 				frontier.offer(aux);
+				time2 = System.currentTimeMillis();
+				t_time= time2-time1;
+				times.add(t_time);
 			}
-			System.out.println(frontier.size());
+			
+			if(t_time < min) {
+				min = t_time;
+			} else if (t_time > max) {
+				max = t_time;
+			}
 		}
+		System.out.println("Minimo: " + min);
+		System.out.println("Maximo: " + max);
 		
+		for(int i=0;i<times.size(); i++) {
+			average += times.get(i);
+		}
+		System.out.println("Average: " + average/times.size());
+
 	}	
 	
 	
