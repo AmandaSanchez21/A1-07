@@ -29,10 +29,11 @@ public class Problem {
 		for (int i=0; i<movements.size(); i++) {
 			movements.get(i).printMove();
 		}
+
+		System.out.println();
+		System.out.println();
 		
-		List<Action> actions = new ArrayList<Action>();
-		System.out.println();
-		System.out.println();
+		frontierQueue(t);
 		
 		/*System.out.println("Possible actions: ");
 		for(int i=0; i<actions.size(); i++) {
@@ -41,6 +42,11 @@ public class Problem {
 		}
 		*/
 		
+		
+	}	
+	
+	public static void frontierQueue (State t) {
+		List<Action> actions = new ArrayList<Action>();
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
 		
 		Node initialState = new Node();
@@ -50,15 +56,14 @@ public class Problem {
 		double max = 0;
 		double min = 10000000;
 		double average=0;
-		double time1 = System.currentTimeMillis();
+		double time1 = 0;
 		double time2;
 		double t_time = 0;
 		
 		List<Double> times = new ArrayList<Double>();
 		
 		while(!frontier.isEmpty() && !isGoal(frontier.peek().getState())) {
-			
-
+			time1 = System.currentTimeMillis();
 			actions = State.successor(frontier.peek().getState());
 			State newState = new State();
 			State currentState = frontier.poll().getState();
@@ -71,15 +76,16 @@ public class Problem {
 				aux.setState(newState);
 				frontier.offer(aux);
 				time2 = System.currentTimeMillis();
-				t_time= time2-time1;
+				t_time= time2-time1; 
+				System.out.println(t_time);
 				times.add(t_time);
-			}
-			
-			if(t_time < min) {
-				min = t_time;
-			} else if (t_time > max) {
-				max = t_time;
-			}
+				
+				if(t_time < min) {
+					min = t_time;
+				} else if (t_time > max) {
+					max = t_time;
+				}
+			}	
 		}
 		System.out.println("Minimo: " + min);
 		System.out.println("Maximo: " + max);
@@ -89,7 +95,32 @@ public class Problem {
 		}
 		System.out.println("Average: " + average/times.size());
 
-	}	
+	}
+	
+	
+	public static void frontierList (State t) {
+		List <Action> actions = new ArrayList<Action>();
+		List <Node> frontier = new ArrayList<Node>();
+		
+		Node initialState = new Node();
+		initialState.setState(t);
+		frontier.add(initialState);
+		
+		double max = 0;
+		double min = 10000000;
+		double average=0;
+		double time1 = 0;
+		double time2;
+		double t_time = 0;
+		
+		List<Double> times = new ArrayList<Double>();
+		
+		while(!frontier.isEmpty() && !isGoal(frontier.get(0).getState())) {
+			
+		}
+		
+		
+	}
 	
 	
 	public static boolean isGoal (State st) {
