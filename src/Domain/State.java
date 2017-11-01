@@ -122,7 +122,7 @@ public class State {
 				t.setCurrent_sand(field[t.getX()][t.getY()] - t.getK());
 				int sand = t.getCurrent_sand();
 				
-				if(sum_sand==sand && sum_sand>0) { //真真真真真真真真  sum_sand>0 ????????????
+				if(sum_sand==sand) { 
 					if (move_Sand(t,aux)) {
 						Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
 						Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
