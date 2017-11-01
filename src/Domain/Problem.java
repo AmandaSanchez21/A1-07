@@ -30,16 +30,16 @@ public class Problem {
 			movements.get(i).printMove();
 		}
 		
-		List<Action> actions = State.successor(t);
+		List<Action> actions = new ArrayList<Action>();
 		System.out.println();
 		System.out.println();
 		
-		System.out.println("Possible actions: ");
+		/*System.out.println("Possible actions: ");
 		for(int i=0; i<actions.size(); i++) {
 			System.out.println("[(" + actions.get(i).getNext_move().getX() + "," + actions.get(i).getNext_move().getY() + ")"  + " N:" +
 		actions.get(i).getSand_n() + " S:" + actions.get(i).getSand_s() + " E:" + actions.get(i).getSand_e() + " W:" + actions.get(i).getSand_w() + "]");
 		}
-		
+		*/
 		
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
 		
@@ -48,13 +48,19 @@ public class Problem {
 		
 		frontier.offer(initialState);
 		
-		
-		
-		
-		
-		
-		
-		
+		while(!frontier.isEmpty() && !isGoal(frontier.peek().getState())) {
+			actions = State.successor(frontier.peek().getState());
+			State newState = new State();
+			State currentState = frontier.poll().getState();
+			
+			for (int i=0; i<actions.size(); i++) {
+				newState = applyAction(currentState, actions.get(i));
+				Node aux = new Node();
+				aux.setState(newState);
+				frontier.offer(aux);
+			}
+			System.out.println(frontier.size());
+		}
 		
 	}	
 	
@@ -91,6 +97,11 @@ public class Problem {
 		}
 		
 		newState.setField(newField);
+		newState.setX(ac.getNext_move().getX());
+		newState.setY(ac.getNext_move().getY());
+		newState.setK(st.getK());
+		newState.setMax(st.getMax());
+	
 		return newState;
 	}
 
