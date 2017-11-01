@@ -35,7 +35,7 @@ public class Problem {
 		System.out.println();
 		
 
-		frontierQueue(t);
+		//frontierQueue(t);
 		int [][] field1 = t.getField();
 		for(int i=0; i<field1.length;i++) {
 			for(int j=0; j<field1.length;j++) {
@@ -158,8 +158,10 @@ public class Problem {
 				} else if (t_time > max) {
 					max = t_time;
 				}
-			}	
+			}
 		}
+		
+		
 		System.out.println();
 		System.out.println("Frontier implemented with List: ");
 		System.out.println("Minimo: " + min);
