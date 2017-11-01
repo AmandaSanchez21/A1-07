@@ -4,7 +4,6 @@ import java.util.*;
 public class State {
 	private int n_rows, n_cols, K, max, current_sand, X, Y; 
 	private int [][] field;
-	private List<Node> frontier = new ArrayList<Node>();
 	
 	
 	
@@ -69,13 +68,6 @@ public class State {
 		this.field = field;
 	}
 	
-	public List<Node> getFrontier() {
-		return frontier;
-	}
-
-	public void setFrontier(List<Node> frontier) {
-		this.frontier = frontier;
-	}
 	
 	
 	
@@ -130,7 +122,7 @@ public class State {
 				t.setCurrent_sand(field[t.getX()][t.getY()] - t.getK());
 				int sand = t.getCurrent_sand();
 				
-				if(sum_sand==sand && sum_sand>0) { //多多多多多多多多多多多多多多多多  sum_sand>0 ????????????
+				if(sum_sand==sand && sum_sand>0) { //真真真真真真真真  sum_sand>0 ????????????
 					if (move_Sand(t,aux)) {
 						Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
 						Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
@@ -162,23 +154,19 @@ public class State {
 	public static boolean move_Sand (State t, int [] sand) {
 		int [][] field = t.getField();
 		
-		if (field[t.getX() - 1] [t.getY()] + sand [0] > t.getMax()) {
+		if (t.getX()-1 > 0 && field[t.getX() - 1] [t.getY()] + sand [0] > t.getMax()) {
 			return false;
-		} else if (field[t.getX() + 1] [t.getY()] + sand [1] > t.getMax()) {
+		} else if (t.getX()+1 < field.length && field[t.getX() + 1] [t.getY()] + sand [1] > t.getMax()) {
 			return false;
-		} else if (field[t.getX()] [t.getY() + 1] + sand [2] > t.getMax()) {
+		} else if (t.getY()+1 < field.length &&field[t.getX()] [t.getY() + 1] + sand [2] > t.getMax()) {
 			return false;
-		} else if (field[t.getX()] [t.getY() - 1] + sand [3] > t.getMax()) {
+		} else if (t.getY()-1 > 0 && field[t.getX()] [t.getY() - 1] + sand [3] > t.getMax()) {
 			return false;
 		}
 		
 		return true;
 	}
 	
-	public List<Node> createFrontier(){
-		Collections.sort(frontier); //It doesn't work like this (?)
-		return frontier;
-	}
 	
 
 }

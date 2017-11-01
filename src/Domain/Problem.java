@@ -50,11 +50,14 @@ public class Problem {
 		
 		while(!frontier.isEmpty() && !isGoal(frontier.peek().getState())) {
 			actions = State.successor(frontier.peek().getState());
+			System.out.println("actions " + actions.size());
 			State newState = new State();
 			State currentState = frontier.poll().getState();
 			
 			for (int i=0; i<actions.size(); i++) {
 				newState = applyAction(currentState, actions.get(i));
+				newState.setN_cols(currentState.getN_cols());
+				newState.setN_rows(currentState.getN_rows());
 				Node aux = new Node();
 				aux.setState(newState);
 				frontier.offer(aux);

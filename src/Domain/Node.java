@@ -1,6 +1,8 @@
 package Domain;
 
-public class Node {
+import java.util.Random;
+
+public class Node implements Comparable<Node>{
 	private State state;
 	private int cost, depth, value;
 	private Action action;
@@ -9,8 +11,9 @@ public class Node {
 		this.state = null;
 		this.cost = 0;
 		this.depth = 0;
-		this.value = 0;
-		this.action = null;
+		
+		Random rm = new Random();
+		this.value = rm.nextInt(10000) + 1;
 	}
 	
 	
@@ -43,6 +46,15 @@ public class Node {
 	}
 	public void setAction(Action action) {
 		this.action = action;
+	}
+	
+	
+	public int compareTo (Node n) {
+		if(this.getValue() < n.getValue()) {
+			return -1;
+		} else {
+			return 1;
+		}
 	}
 	
 	
