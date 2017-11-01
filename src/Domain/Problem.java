@@ -10,6 +10,7 @@ public class Problem {
 	public static void main (String[]args) throws IOException, InputExceptions {
 		State t = new State(); 
 		FileHandler.readFile(t);
+		State newState = t; 
 		int [][]field = t.getField();
 		
 		System.out.println();
@@ -33,7 +34,16 @@ public class Problem {
 		System.out.println();
 		System.out.println();
 		
+
 		frontierQueue(t);
+		int [][] field1 = t.getField();
+		for(int i=0; i<field1.length;i++) {
+			for(int j=0; j<field1.length;j++) {
+				System.out.print(field1[i][j]);
+			}
+			System.out.println();
+		}
+		frontierList(t);
 		
 		/*System.out.println("Possible actions: ");
 		for(int i=0; i<actions.size(); i++) {
@@ -77,7 +87,6 @@ public class Problem {
 				frontier.offer(aux);
 				time2 = System.currentTimeMillis();
 				t_time= time2-time1; 
-				System.out.println(t_time);
 				times.add(t_time);
 				
 				if(t_time < min) {
@@ -87,6 +96,8 @@ public class Problem {
 				}
 			}	
 		}
+		System.out.println();
+		System.out.println("Frontier implemented with queue: ");
 		System.out.println("Minimo: " + min);
 		System.out.println("Maximo: " + max);
 		
@@ -105,6 +116,7 @@ public class Problem {
 		Node initialState = new Node();
 		initialState.setState(t);
 		frontier.add(initialState);
+		System.out.println(frontier.size());
 		
 		double max = 0;
 		double min = 10000000;
@@ -116,11 +128,51 @@ public class Problem {
 		List<Double> times = new ArrayList<Double>();
 		
 		while(!frontier.isEmpty() && !isGoal(frontier.get(0).getState())) {
+			time1 = System.currentTimeMillis();
+			actions = State.successor(frontier.get(0).getState());
+			State newState = new State();
+			State currentState = frontier.remove(0).getState();
 			
+			for (int i=0; i<actions.size(); i++) {
+			
+				newState = applyAction(currentState, actions.get(i));
+				newState.setN_cols(currentState.getN_cols());
+				newState.setN_rows(currentState.getN_rows());
+				Node aux = new Node();
+				aux.setState(newState);
+				frontier.add(aux);
+				time2 = System.currentTimeMillis();
+				t_time= time2-time1; 
+				//System.out.println(t_time);
+				times.add(t_time);
+				
+				Collections.sort(frontier, new Comparator<Node>() {
+					public int compare(Node n1, Node n2) {
+						return new Integer(n1.getValue()).compareTo(new Integer(n2.getValue()));
+
+					}
+				});
+				
+				if(t_time < min) {
+					min = t_time;
+				} else if (t_time > max) {
+					max = t_time;
+				}
+			}	
 		}
+		System.out.println();
+		System.out.println("Frontier implemented with List: ");
+		System.out.println("Minimo: " + min);
+		System.out.println("Maximo: " + max);
+		
+		for(int i=0;i<times.size(); i++) {
+			average += times.get(i);
+		}
+		System.out.println("Average: " + average/times.size());
 		
 		
 	}
+	
 	
 	
 	public static boolean isGoal (State st) {
@@ -144,6 +196,8 @@ public class Problem {
 		int newPos = pos - currentSand;
 		newField[st.getX()][st.getY()] = newPos;
 		
+	
+		
 		if(ac.getSand_n() > 0 && st.getX()-1 > 0 && newField[st.getX()-1][st.getY()] + ac.getSand_n() <= st.getMax()) {
 			newField[st.getX()-1][st.getY()] += ac.getSand_n();
 		} else if(ac.getSand_s() > 0 && st.getX()+1 < newField.length && newField[st.getX()+1][st.getY()] + ac.getSand_s() <= st.getMax()) {
@@ -159,7 +213,8 @@ public class Problem {
 		newState.setY(ac.getNext_move().getY());
 		newState.setK(st.getK());
 		newState.setMax(st.getMax());
-	
+		
+
 		return newState;
 	}
 

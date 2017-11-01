@@ -109,6 +109,7 @@ public class State {
 		
 		int [][] field = t.getField();
 		int [] aux = new int[4];
+		int sand = 0;
 		
 		for (int i=0; i<moves.size(); i++) {
 			for (int j=0; j<combinations.size(); j++) {
@@ -118,15 +119,17 @@ public class State {
 					aux = combinations.get(j);
 					sum_sand = sum_sand + aux[s];
 				}
-				
-				t.setCurrent_sand(field[t.getX()][t.getY()] - t.getK());
-				int sand = t.getCurrent_sand();
-				
-				if(sum_sand==sand) { 
-					if (move_Sand(t,aux)) {
-						Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
-						Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
-						actions.add(ac);
+		
+				if (field[t.getX()][t.getY()] - t.getK() > 0) {
+					t.setCurrent_sand(field[t.getX()][t.getY()] - t.getK());
+					sand = t.getCurrent_sand();
+			
+					if(sum_sand==sand) { 
+						if (move_Sand(t,aux)) {
+							Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
+							Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
+							actions.add(ac);
+						}
 					}
 				}
 			}
