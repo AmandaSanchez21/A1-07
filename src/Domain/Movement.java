@@ -22,10 +22,10 @@ public class Movement {
 
 	public void setY(int y) {
 		Y = y;
-	}
-	
-	public void printMove () {
-		System.out.print("(" + X + ", " + Y + ")");
 	}	
 	
+	
+	public void printMove() {
+		System.out.println("[" + X + "," + Y + "]");
+	}
 }

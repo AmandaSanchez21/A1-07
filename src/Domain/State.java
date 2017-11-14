@@ -134,10 +134,17 @@ public class State {
 				}
 			}
 		}
-		
 		return actions;
 	}
 		
+	@Override
+	public String toString() {
+		return "State [n_rows=" + n_rows + ", n_cols=" + n_cols + ", K=" + K + ", max=" + max + ", current_sand="
+				+ current_sand + ", X=" + X + ", Y=" + Y + ", field=" + Arrays.toString(field) + "]";
+	}
+
+
+
 	public static List<int[]> generate_combinations(int max) {
 		List <int[]> combinations = new ArrayList<int[]> ();
 		
@@ -168,6 +175,28 @@ public class State {
 		}
 		
 		return true;
+	}
+	
+	public static State copyState(State st, Action ac, int [][] new_field) {
+		State newState = new State();
+		
+		newState.setField(new_field);
+		newState.setX(ac.getNext_move().getX());
+		newState.setY(ac.getNext_move().getY());
+		newState.setK(st.getK());
+		newState.setMax(st.getMax());
+		newState.setCurrent_sand(st.getCurrent_sand());
+		newState.setN_cols(st.getN_cols());
+		newState.setN_rows(st.getN_rows());
+		
+		return newState;
+	}
+	
+	
+	
+	public static int cost (Action ac) {
+		int cost = ac.getSand_e()+ ac.getSand_n() + ac.getSand_s() + ac.getSand_w() + 1;
+		return cost;
 	}
 	
 	

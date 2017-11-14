@@ -6,7 +6,7 @@ import persistance.FileHandler;
 import persistance.InputExceptions;
 
 public class Problem {
-	
+
 	public static void main (String[]args) throws IOException, InputExceptions {
 		State t = new State(); 
 		FileHandler.readFile(t);
@@ -22,7 +22,7 @@ public class Problem {
 			System.out.println();
 		}
 		
-		
+		List<Action>actions = State.successor(t);
 		List<Movement> movements = State.moveTractor(t);
 		System.out.println();
 		System.out.println("Possible movements: ");
@@ -30,153 +30,92 @@ public class Problem {
 		for (int i=0; i<movements.size(); i++) {
 			movements.get(i).printMove();
 		}
-
+		/*
 		System.out.println();
 		System.out.println();
 		
-
-		//frontierQueue(t);
-		int [][] field1 = t.getField();
-		for(int i=0; i<field1.length;i++) {
-			for(int j=0; j<field1.length;j++) {
-				System.out.print(field1[i][j]);
-			}
-			System.out.println();
-		}
-		frontierList(t);
+		System.out.println("Possible actions: ");
 		
-		/*System.out.println("Possible actions: ");
 		for(int i=0; i<actions.size(); i++) {
 			System.out.println("[(" + actions.get(i).getNext_move().getX() + "," + actions.get(i).getNext_move().getY() + ")"  + " N:" +
 		actions.get(i).getSand_n() + " S:" + actions.get(i).getSand_s() + " E:" + actions.get(i).getSand_e() + " W:" + actions.get(i).getSand_w() + "]");
+		}*/
+		
+		
+		String strategy;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please, enter the strategy\nBFS, DFS, DLS, ILS or UCS ");
+		strategy = sc.nextLine();
+		strategy = strategy.toUpperCase();
+		
+		while (!strategy.equals("BFS") && !strategy.equals("DFS") && !strategy.equals("DLS") && !strategy.equals("ILS") && !strategy.equals("UCS")) {
+			System.out.println("Please, enter a correct strategy \nBFS, DFS, DLS, ILS or UCS");
+			strategy = sc.nextLine().toUpperCase();
 		}
-		*/
 		
+		System.out.println("Now, enter the depth desired.");
+		int depth = sc.nextInt();
 		
-	}	
-	
-	public static void frontierQueue (State t) {
-		List<Action> actions = new ArrayList<Action>();
-		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-		
-		Node initialState = new Node();
-		initialState.setState(t);
-		frontier.offer(initialState);
-		
-		double max = 0;
-		double min = 10000000;
-		double average=0;
-		double time1 = 0;
-		double time2;
-		double t_time = 0;
-		
-		List<Double> times = new ArrayList<Double>();
-		
-		while(!frontier.isEmpty() && !isGoal(frontier.peek().getState())) {
-			time1 = System.currentTimeMillis();
-			actions = State.successor(frontier.peek().getState());
-			State newState = new State();
-			State currentState = frontier.poll().getState();
-			
-			for (int i=0; i<actions.size(); i++) {
-				newState = applyAction(currentState, actions.get(i));
-				newState.setN_cols(currentState.getN_cols());
-				newState.setN_rows(currentState.getN_rows());
-				Node aux = new Node();
-				aux.setState(newState);
-				frontier.offer(aux);
-				time2 = System.currentTimeMillis();
-				t_time= time2-time1; 
-				times.add(t_time);
-				
-				if(t_time < min) {
-					min = t_time;
-				} else if (t_time > max) {
-					max = t_time;
-				}
-			}	
+		while(depth<0) {
+			System.out.println("Please, enter a valid depth");
+			depth = sc.nextInt();
 		}
-		System.out.println();
-		System.out.println("Frontier implemented with queue: ");
-		System.out.println("Minimo: " + min);
-		System.out.println("Maximo: " + max);
 		
-		for(int i=0;i<times.size(); i++) {
-			average += times.get(i);
-		}
-		System.out.println("Average: " + average/times.size());
-
+		List<Node> solution = boundedSearch(t, strategy, depth);
+		System.out.println(solution.size());
+		
 	}
 	
 	
-	public static void frontierList (State t) {
-		List <Action> actions = new ArrayList<Action>();
-		List <Node> frontier = new ArrayList<Node>();
+	public static List<Node> boundedSearch(State st, String strategy, int max_depth) {
+		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
+		Node initial_node = new Node(st, 0, 0, null);
+		initial_node.selectValueNode(strategy);
+		frontier.offer(initial_node);
+		Node current_node = new Node();
 		
-		Node initialState = new Node();
-		initialState.setState(t);
-		frontier.add(initialState);
-		System.out.println(frontier.size());
-		
-		double max = 0;
-		double min = 10000000;
-		double average=0;
-		double time1 = 0;
-		double time2;
-		double t_time = 0;
-		
-		List<Double> times = new ArrayList<Double>();
-		
-		while(!frontier.isEmpty() && !isGoal(frontier.get(0).getState())) {
-			time1 = System.currentTimeMillis();
-			actions = State.successor(frontier.get(0).getState());
-			State newState = new State();
-			State currentState = frontier.remove(0).getState();
-			
-			for (int i=0; i<actions.size(); i++) {
-			
-				newState = applyAction(currentState, actions.get(i));
-				newState.setN_cols(currentState.getN_cols());
-				newState.setN_rows(currentState.getN_rows());
-				Node aux = new Node();
-				aux.setState(newState);
-				frontier.add(aux);
-				time2 = System.currentTimeMillis();
-				t_time= time2-time1; 
-				//System.out.println(t_time);
-				times.add(t_time);
-				
-				Collections.sort(frontier, new Comparator<Node>() {
-					public int compare(Node n1, Node n2) {
-						return new Integer(n1.getValue()).compareTo(new Integer(n2.getValue()));
+		boolean solution = false;
 
-					}
-				});
+		
+		while(!frontier.isEmpty() && solution==false) {
+			current_node = frontier.poll();
+			
+			if(isGoal(current_node.getState())) {
+				solution = true;
+			} else {
+				List<Action> actions = State.successor(current_node.getState());
+				List<Node> nodes = createNodeList(actions, current_node, max_depth, strategy, current_node.getState());
 				
-				if(t_time < min) {
-					min = t_time;
-				} else if (t_time > max) {
-					max = t_time;
+				for(int i=0; i<nodes.size(); i++) {
+					frontier.add(nodes.get(i));
 				}
 			}
 		}
-		
-		
-		System.out.println();
-		System.out.println("Frontier implemented with List: ");
-		System.out.println("Minimo: " + min);
-		System.out.println("Maximo: " + max);
-		
-		for(int i=0;i<times.size(); i++) {
-			average += times.get(i);
+				
+		if(solution) {
+			return createSolution(current_node);
+		} else {
+			return null;
 		}
-		System.out.println("Average: " + average/times.size());
-		
 		
 	}
 	
 	
+/*	public static List<Node> search (State st, String strategy, int max_depth, int inc_depth) {
+		int current_depth = inc_depth;
+		List<Node> solution = new ArrayList<Node>();
+		
+		while (solution.size() == 0 && current_depth <= max_depth) {
+			solution = boundedSearch(st,strategy,current_depth);
+			current_depth += inc_depth;
+		}
+		return solution;
+	}*/
 	
+	
+	
+
+
 	public static boolean isGoal (State st) {
 		int [][] field = st.getField();
 		
@@ -191,33 +130,77 @@ public class Problem {
 	}
 	
 	public static State applyAction (State st, Action ac) {
-		State newState = new State();
+		
 		int [][] newField = st.getField();
 		int pos = newField[st.getX()][st.getY()];
-		int currentSand = ac.getSand_e() + ac.getSand_n() + ac.getSand_s() + ac.getSand_w();
-		int newPos = pos - currentSand;
+		int movedSand = ac.getSand_e() + ac.getSand_n() + ac.getSand_s() + ac.getSand_w();
+		int newPos = pos - movedSand;
 		newField[st.getX()][st.getY()] = newPos;
+		//st.setCurrent_sand(st.getCurrent_sand() - movedSand);
 		
 	
 		
 		if(ac.getSand_n() > 0 && st.getX()-1 > 0 && newField[st.getX()-1][st.getY()] + ac.getSand_n() <= st.getMax()) {
 			newField[st.getX()-1][st.getY()] += ac.getSand_n();
-		} else if(ac.getSand_s() > 0 && st.getX()+1 < newField.length && newField[st.getX()+1][st.getY()] + ac.getSand_s() <= st.getMax()) {
+		} 
+		if(ac.getSand_s() > 0 && st.getX()+1 < newField.length && newField[st.getX()+1][st.getY()] + ac.getSand_s() <= st.getMax()) {
 			newField[st.getX()+1][st.getY()] += ac.getSand_s();
-		} else if(ac.getSand_w() > 0 && st.getY()-1 > 0 && newField[st.getX()][st.getY()-1] + ac.getSand_w() <= st.getMax()) {
+		} 
+		if(ac.getSand_w() > 0 && st.getY()-1 > 0 && newField[st.getX()][st.getY()-1] + ac.getSand_w() <= st.getMax()) {
 			newField[st.getX()][st.getY()-1] += ac.getSand_w();
-		} else if(ac.getSand_e() > 0 && st.getY()+1 < newField.length && newField[st.getX()][st.getY()+1] + ac.getSand_e() <= st.getMax()) {
+		} 
+		if(ac.getSand_e() > 0 && st.getY()+1 < newField.length && newField[st.getX()][st.getY()+1] + ac.getSand_e() <= st.getMax()) {
 			newField[st.getX()][st.getY()+1] += ac.getSand_e();
 		}
 		
-		newState.setField(newField);
+		/*newState.setField(newField);
 		newState.setX(ac.getNext_move().getX());
 		newState.setY(ac.getNext_move().getY());
 		newState.setK(st.getK());
 		newState.setMax(st.getMax());
+		newState.setCurrent_sand(st.getCurrent_sand());*/
 		
+		System.out.println(ac.toString());
+		for(int i=0; i<newField.length; i++) {
+			for (int j=0; j<newField.length; j++) {
+				System.out.print(" " + newField[i][j]);
+			}
+			System.out.println("");
+		}
+		State newState = State.copyState(st, ac, newField);
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		//System.out.println(newState.toString());
 
 		return newState;
+	}
+	
+	public static List<Node> createNodeList (List<Action> actions, Node cn, int depth, String strategy, State st) {
+		List <Node> nodes = new ArrayList<Node>();
+		
+		if(cn.getDepth() + 1 <= depth) {
+			for(int i=0; i<actions.size(); i++) {
+				State c_state = applyAction(st, actions.get(i));
+				Node aux = new Node(c_state, State.cost(actions.get(i)), cn.getDepth() + 1, cn);
+				aux.selectValueNode(strategy);
+				nodes.add(aux);
+			}
+		}
+		
+		return nodes;
+	}
+	
+	
+	private static List<Node> createSolution(Node current_node) {
+		List <Node> solution = new ArrayList<Node>();
+		
+		while (current_node != null) {
+			solution.add(current_node);
+			current_node=current_node.getFather();
+		}
+		
+		return solution;
 	}
 
 }
