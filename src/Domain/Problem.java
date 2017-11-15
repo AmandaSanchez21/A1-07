@@ -31,10 +31,10 @@ public class Problem {
 		for (int i=0; i<movements.size(); i++) {
 			movements.get(i).printMove();
 		}
-		/*
-		System.out.println();
-		System.out.println();
 		
+		System.out.println();
+		System.out.println();
+		/*
 		System.out.println("Possible actions: ");
 		
 		for(int i=0; i<actions.size(); i++) {
@@ -63,15 +63,20 @@ public class Problem {
 		}
 		
 		List<Node> solution = boundedSearch(t, strategy, depth);
-		System.out.println(solution.size());
+		Action act = solution.get(0).getAction();
+		System.out.println(act.toString());
+		solution.get(0).getState().printField();
+		System.out.println();
+		System.out.println("The total cost is " + solution.get(0).getCost() + " and the total depth is " + solution.get(0).getDepth());
 		
+		
+		//printSolution(solution);
 	}
 	
 	
 	public static List<Node> boundedSearch(State st, String strategy, int max_depth) {
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-		int [][] field = st.getField();
-		Node initial_node = new Node(st, 0, 0, null);
+		Node initial_node = new Node(st, 0, 0, null); //Initial node with the initial state, cost and depth are 0 and there's no reference to a parent
 		initial_node.selectValueNode(strategy);
 		frontier.add(initial_node);
 		Node current_node = new Node();
@@ -80,25 +85,21 @@ public class Problem {
 
 		
 		while(!frontier.isEmpty() && solution==false) {
-			current_node = frontier.poll();
+			current_node = frontier.poll(); //Removes the node which is in the head of the queue
 			
 			if(isGoal(current_node.getState())) {
 				solution = true;
 			} else {
-				List<Action> actions = State.successor(current_node.getState());
-				List<Node> nodes = createNodeList(actions, current_node, max_depth, strategy, current_node.getState());
+				List<Action> actions = State.successor(current_node.getState()); //Generates all the possible actions
+				List<Node> nodes = createNodeList(actions, current_node, max_depth, strategy, current_node.getState()); //Creates a node list where each node has a new state, 
+																														//generated after applying the corresponding action
 				
 				for(int i=0; i<nodes.size(); i++) {
 					frontier.add(nodes.get(i));
 				}
 			}
 		}
-		for (int i =0; i<field.length; i++) {
-			for (int j=0; j<field.length; j++) {
-				System.out.print(field[i][j]);
-			}
-			System.out.println();
-		}
+		
 		if(solution) {
 			return createSolution(current_node);
 		} else {
@@ -106,22 +107,7 @@ public class Problem {
 			return null;
 			
 		}
-		
 	}
-	
-	
-/*	public static List<Node> search (State st, String strategy, int max_depth, int inc_depth) {
-		int current_depth = inc_depth;
-		List<Node> solution = new ArrayList<Node>();
-		
-		while (solution.size() == 0 && current_depth <= max_depth) {
-			solution = boundedSearch(st,strategy,current_depth);
-			current_depth += inc_depth;
-		}
-		return solution;
-	}*/
-	
-	
 	
 
 
@@ -141,34 +127,24 @@ public class Problem {
 	public static State applyAction (State st, Action ac) {
 		
 		int [][] newField = st.getField();
-		int pos = newField[st.getX()][st.getY()];
-		int movedSand = ac.getSand_e() + ac.getSand_n() + ac.getSand_s() + ac.getSand_w();
+		int pos = newField[st.getX()][st.getY()]; //Amount of sand in the current position 
+		int movedSand = ac.getSand_e() + ac.getSand_n() + ac.getSand_s() + ac.getSand_w(); //Totally amount of sand to move
 		int newPos = pos - movedSand;
-		newField[st.getX()][st.getY()] = newPos;
-		//st.setCurrent_sand(st.getCurrent_sand() - movedSand);
-		
-	
-		
-		if(ac.getSand_n() > 0 && st.getX()-1 > 0 && newField[st.getX()-1][st.getY()] + ac.getSand_n() <= st.getMax()) {
-			newField[st.getX()-1][st.getY()] += ac.getSand_n();
+		newField[st.getX()][st.getY()] = newPos; //Remaining sand in the current position 
+		/* If there is sand to move to the North, East, West or South && if it is possible to move to the North, East, West or South*/
+		if(ac.getSand_n() > 0 && st.getX()+1 >= 0) {
+			newField[st.getX()-1][st.getY()] += ac.getSand_n(); //Update the amount of sand of the field
 		} 
-		if(ac.getSand_s() > 0 && st.getX()+1 < newField.length && newField[st.getX()+1][st.getY()] + ac.getSand_s() <= st.getMax()) {
+		if(ac.getSand_s() > 0 && st.getX()+1 < newField.length) {
 			newField[st.getX()+1][st.getY()] += ac.getSand_s();
 		} 
-		if(ac.getSand_w() > 0 && st.getY()-1 > 0 && newField[st.getX()][st.getY()-1] + ac.getSand_w() <= st.getMax()) {
+		if(ac.getSand_w() > 0 && st.getY()-1 >= 0) {
 			newField[st.getX()][st.getY()-1] += ac.getSand_w();
 		} 
-		if(ac.getSand_e() > 0 && st.getY()+1 < newField.length && newField[st.getX()][st.getY()+1] + ac.getSand_e() <= st.getMax()) {
+		if(ac.getSand_e() > 0 && st.getY()+1 < newField.length) {
 			newField[st.getX()][st.getY()+1] += ac.getSand_e();
 		}
-		
-		/*System.out.println(ac.toString());
-		for(int i=0; i<newField.length; i++) {
-			for (int j=0; j<newField.length; j++) {
-				System.out.print(" " + newField[i][j]);
-			}
-			System.out.println("");
-		}*/
+	
 		State newState = State.copyState(st, ac, newField);
 
 		return newState;
@@ -182,6 +158,7 @@ public class Problem {
 				State c_state = applyAction(st, actions.get(i));
 				Node aux = new Node(c_state, State.cost(actions.get(i)), new_depth, cn);
 				aux.selectValueNode(strategy);
+				aux.setAction(actions.get(i));
 				nodes.add(aux);
 			}
 		}
@@ -190,7 +167,7 @@ public class Problem {
 	}
 	
 	
-	private static List<Node> createSolution(Node current_node) {
+	public static List<Node> createSolution(Node current_node) {
 		List <Node> solution = new ArrayList<Node>();
 		
 		while (current_node != null) {
@@ -200,5 +177,26 @@ public class Problem {
 		
 		return solution;
 	}
+	
+	public static void printSolution (List<Node>solution) {
+		Node node = solution.get(0);
+		while (node.getAction() != null) {
+			for (int i=0; i<solution.size(); i++) {
+				node = solution.get(i);
+				System.out.println(node.getAction().toString());
+				int [][] field = node.getState().getField();
+				
+				for(int j=0; j<field.length; j++) {
+					for(int x=0; x<field.length; x++) {
+						System.out.print(field[j][x]);
+					}
+					System.out.println();
+				}
+				System.out.println();
+			}
+		}
+	}
+	
+	
 
 }

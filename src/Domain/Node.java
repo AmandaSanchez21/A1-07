@@ -3,6 +3,7 @@ package Domain;
 import java.util.Random;
 
 public class Node implements Comparable<Node>{
+
 	private State state;
 	private int cost, depth, value;
 	private Action action;
@@ -76,6 +77,12 @@ public class Node implements Comparable<Node>{
 	}
 	public void setFather(Node father) {
 		this.father = father;
+	}
+	
+	@Override
+	public String toString() {
+		return "Node [state=" + state + ", cost=" + cost + ", depth=" + depth + ", value=" + value + ", action="
+				+ action + ", father=" + father + "]";
 	}
 	
 	

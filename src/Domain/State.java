@@ -2,7 +2,13 @@ package Domain;
 import java.util.*;
 
 public class State {
-	private int n_rows, n_cols, K, max, current_sand, X, Y; 
+	private int n_rows;
+	private int n_cols;
+	private int K;
+	private int max;
+	private int current_sand;
+	private int X;
+	private int Y; 
 	private int [][] field;
 	
 	
@@ -203,6 +209,15 @@ public class State {
 	public static int cost (Action ac) {
 		int cost = ac.getSand_e()+ ac.getSand_n() + ac.getSand_s() + ac.getSand_w() + 1;
 		return cost;
+	}
+	
+	public void printField() {
+		for (int i=0; i<n_rows; i++) {
+			for (int j=0; j<n_cols; j++) {
+				System.out.print(field[i][j]);
+			}
+			System.out.println();
+		}
 	}
 	
 	
