@@ -13,6 +13,7 @@ public class Problem {
 		State newState = t; 
 		int [][]field = t.getField();
 		
+		
 		System.out.println();
 		
 		for (int i1=0; i1<field.length; i1++) {
@@ -69,9 +70,10 @@ public class Problem {
 	
 	public static List<Node> boundedSearch(State st, String strategy, int max_depth) {
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
+		int [][] field = st.getField();
 		Node initial_node = new Node(st, 0, 0, null);
 		initial_node.selectValueNode(strategy);
-		frontier.offer(initial_node);
+		frontier.add(initial_node);
 		Node current_node = new Node();
 		
 		boolean solution = false;
@@ -91,11 +93,18 @@ public class Problem {
 				}
 			}
 		}
-				
+		for (int i =0; i<field.length; i++) {
+			for (int j=0; j<field.length; j++) {
+				System.out.print(field[i][j]);
+			}
+			System.out.println();
+		}
 		if(solution) {
 			return createSolution(current_node);
 		} else {
+			System.out.println("No solution");
 			return null;
+			
 		}
 		
 	}
@@ -153,36 +162,25 @@ public class Problem {
 			newField[st.getX()][st.getY()+1] += ac.getSand_e();
 		}
 		
-		/*newState.setField(newField);
-		newState.setX(ac.getNext_move().getX());
-		newState.setY(ac.getNext_move().getY());
-		newState.setK(st.getK());
-		newState.setMax(st.getMax());
-		newState.setCurrent_sand(st.getCurrent_sand());*/
-		
-		System.out.println(ac.toString());
+		/*System.out.println(ac.toString());
 		for(int i=0; i<newField.length; i++) {
 			for (int j=0; j<newField.length; j++) {
 				System.out.print(" " + newField[i][j]);
 			}
 			System.out.println("");
-		}
+		}*/
 		State newState = State.copyState(st, ac, newField);
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		//System.out.println(newState.toString());
 
 		return newState;
 	}
 	
 	public static List<Node> createNodeList (List<Action> actions, Node cn, int depth, String strategy, State st) {
 		List <Node> nodes = new ArrayList<Node>();
-		
+		int new_depth = cn.getDepth() +1;
 		if(cn.getDepth() + 1 <= depth) {
 			for(int i=0; i<actions.size(); i++) {
 				State c_state = applyAction(st, actions.get(i));
-				Node aux = new Node(c_state, State.cost(actions.get(i)), cn.getDepth() + 1, cn);
+				Node aux = new Node(c_state, State.cost(actions.get(i)), new_depth, cn);
 				aux.selectValueNode(strategy);
 				nodes.add(aux);
 			}

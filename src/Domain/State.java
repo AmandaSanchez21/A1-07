@@ -62,7 +62,13 @@ public class State {
 		Y = y;
 	}
 	public int[][] getField() {
-		return field;
+		int [][] aux = new int [n_cols][n_rows];
+		
+		for (int i=0; i<field.length; i++) {
+			System.arraycopy(field[i], 0, aux[i], 0, field[i].length);
+		}
+		
+		return aux;
 	}
 	public void setField(int[][] field) {
 		this.field = field;
