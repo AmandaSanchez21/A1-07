@@ -73,7 +73,7 @@ public class Problem {
 		List<Double> times = new ArrayList<Double>();
 		
 		while(!frontier.isEmpty() && !isGoal(frontier.peek().getState())) {
-			time1 = System.currentTimeMillis();
+			time1 = System.nanoTime();
 			actions = State.successor(frontier.peek().getState());
 			State newState = new State();
 			State currentState = frontier.poll().getState();
@@ -85,7 +85,7 @@ public class Problem {
 				Node aux = new Node();
 				aux.setState(newState);
 				frontier.offer(aux);
-				time2 = System.currentTimeMillis();
+				time2 = System.nanoTime();
 				t_time= time2-time1; 
 				times.add(t_time);
 				
@@ -98,13 +98,13 @@ public class Problem {
 		}
 		System.out.println();
 		System.out.println("Frontier implemented with queue: ");
-		System.out.println("Minimo: " + min);
-		System.out.println("Maximo: " + max);
+		System.out.println("Minimo: " + min + " nanoseconds");
+		System.out.println("Maximo: " + max + " nanoseconds");
 		
 		for(int i=0;i<times.size(); i++) {
 			average += times.get(i);
 		}
-		System.out.println("Average: " + average/times.size());
+		System.out.println("Average: " + average/times.size() + " nanoseconds");
 
 	}
 	
@@ -128,7 +128,7 @@ public class Problem {
 		List<Double> times = new ArrayList<Double>();
 		
 		while(!frontier.isEmpty() && !isGoal(frontier.get(0).getState())) {
-			time1 = System.currentTimeMillis();
+			time1 = System.nanoTime();
 			actions = State.successor(frontier.get(0).getState());
 			State newState = new State();
 			State currentState = frontier.remove(0).getState();
@@ -141,7 +141,7 @@ public class Problem {
 				Node aux = new Node();
 				aux.setState(newState);
 				frontier.add(aux);
-				time2 = System.currentTimeMillis();
+				time2 = System.nanoTime();
 				t_time= time2-time1; 
 				//System.out.println(t_time);
 				times.add(t_time);
@@ -164,13 +164,13 @@ public class Problem {
 		
 		System.out.println();
 		System.out.println("Frontier implemented with List: ");
-		System.out.println("Minimo: " + min);
-		System.out.println("Maximo: " + max);
+		System.out.println("Minimo: " + min + " nanoseconds");
+		System.out.println("Maximo: " + max + " nanoseconds");
 		
 		for(int i=0;i<times.size(); i++) {
 			average += times.get(i);
 		}
-		System.out.println("Average: " + average/times.size());
+		System.out.println("Average: " + average/times.size() + " nanoseconds");
 		
 		
 	}
