@@ -88,12 +88,12 @@ public class Node implements Comparable<Node>{
 	
 	
 	public void selectValueNode(String strategy) {
-		if(strategy == "BFS") {
-			value = depth;
-		} else if(strategy == "DFS" || strategy == "DLS" || strategy == "IDS") {
-			value = -depth;
-		} else if (strategy == "UCS") {
-			value = cost;
+		if(strategy.equals("BFS")) {
+			this.value = this.depth;
+		} else if(strategy.equals("DFS") || strategy.equals("DLS") || strategy.equals("IDS")) {
+			this.value = this.depth * -1;
+		} else if (strategy.equals("UCS")) {
+			this.value = this.cost;
 		}
 	}
 

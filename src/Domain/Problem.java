@@ -34,8 +34,8 @@ public class Problem {
 		
 		System.out.println();
 		System.out.println();
-		/*
-		System.out.println("Possible actions: ");
+		
+		/*System.out.println("Possible actions: ");
 		
 		for(int i=0; i<actions.size(); i++) {
 			System.out.println("[(" + actions.get(i).getNext_move().getX() + "," + actions.get(i).getNext_move().getY() + ")"  + " N:" +
@@ -57,20 +57,15 @@ public class Problem {
 		System.out.println("Now, enter the depth desired.");
 		int depth = sc.nextInt();
 		
-		while(depth<0) {
+		while(depth<=0) {
 			System.out.println("Please, enter a valid depth");
 			depth = sc.nextInt();
 		}
 		
 		List<Node> solution = boundedSearch(t, strategy, depth);
-		Action act = solution.get(0).getAction();
-		System.out.println(act.toString());
-		solution.get(0).getState().printField();
-		System.out.println();
-		System.out.println("The total cost is " + solution.get(0).getCost() + " and the total depth is " + solution.get(0).getDepth());
 		
 		
-		//printSolution(solution);
+		printSolution(solution);
 	}
 	
 	
@@ -158,6 +153,7 @@ public class Problem {
 				State c_state = applyAction(st, actions.get(i));
 				Node aux = new Node(c_state, State.cost(actions.get(i)), new_depth, cn);
 				aux.selectValueNode(strategy);
+				System.out.print("Value " + aux.getValue() + "  ");
 				aux.setAction(actions.get(i));
 				nodes.add(aux);
 			}
@@ -179,12 +175,29 @@ public class Problem {
 	}
 	
 	public static void printSolution (List<Node>solution) {
-		Node node = solution.get(0);
-		while (node.getAction() != null) {
-			for (int i=0; i<solution.size(); i++) {
-				node = solution.get(i);
+		int cost=0;
+		for (int i=solution.size()-1; i>=0; i--) {
+			Node node = solution.get(i);
+
+			if(i==solution.size()-1) {
+				System.out.println("Initial Field: ");
+				node.getState().printField();
+				System.out.println();
+			} else {
+				cost += State.cost(solution.get(i).getAction());
+				State st = node.getState();
+				
+				/*System.out.println(node.getAction().getNext_move().getX());
+				System.out.println(node.getAction().getNext_move().getY());
+				int north = st.getX()-1, south = st.getX()+1, east = st.getY()+1, west = st.getY()-1;
+				System.out.println("Action: [(" + solution.get(i).getAction().getSand_n() + ", (" + st.getX() + "," + st.getY() + ")) ," 
+						+ "(" + solution.get(i).getAction().getSand_s() + ", (" + st.getX()+ "," + st.getY() + "))"
+						+ "(" + solution.get(i).getAction().getSand_w() + ", (" + st.getX() + "," + west + "))"
+						+ "(" + solution.get(i).getAction().getSand_e() + ", (" + st.getX() + "," + east + "))]");*/
+				
 				System.out.println(node.getAction().toString());
-				int [][] field = node.getState().getField();
+				
+				int [][] field = st.getField();
 				
 				for(int j=0; j<field.length; j++) {
 					for(int x=0; x<field.length; x++) {
@@ -195,8 +208,7 @@ public class Problem {
 				System.out.println();
 			}
 		}
+		
+		System.out.println("The total cost is " + cost + " and the total depth is " + solution.get(0).getDepth());
 	}
-	
-	
-
 }

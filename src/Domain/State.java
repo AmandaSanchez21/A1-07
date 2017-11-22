@@ -145,6 +145,12 @@ public class State {
 					}
 				}
 			}
+			
+			if (field[t.getX()][t.getY()] - t.getK() < 0) {
+				Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
+				Action ac = new Action (mv, 0, 0, 0, 0);
+				actions.add(ac);
+			}
 		}
 		return actions;
 	}
@@ -175,18 +181,41 @@ public class State {
 	
 	public static boolean move_Sand (State t, int [] sand) {
 		int [][] field = t.getField();
+		boolean value = true;
 		
-		if (t.getX()-1 > 0 && field[t.getX() - 1] [t.getY()] + sand [0] > t.getMax()) {
-			return false;
-		} else if (t.getX()+1 < field.length && field[t.getX() + 1] [t.getY()] + sand [1] > t.getMax()) {
-			return false;
-		} else if (t.getY()+1 < field.length &&field[t.getX()] [t.getY() + 1] + sand [2] > t.getMax()) {
-			return false;
-		} else if (t.getY()-1 > 0 && field[t.getX()] [t.getY() - 1] + sand [3] > t.getMax()) {
-			return false;
+		if(sand[0] > 0) {
+			if (t.getX()-1 >= 0 && field[t.getX() - 1] [t.getY()] + sand [0] <= t.getMax()) {
+				value = true;
+			} else {
+				return false;
+			}
 		}
 		
-		return true;
+		if(sand[1] > 0) {
+			if (t.getX()+1 < field.length && field[t.getX() + 1] [t.getY()] + sand [1] <= t.getMax()) {
+				value = true;
+			} else {
+				return false;
+			}
+		}
+		
+		if(sand[2] > 0) {
+			if (t.getY()+1 < field.length && field[t.getX()] [t.getY() + 1] + sand [2] <= t.getMax()) {
+				value = true;
+			} else {
+				return false;
+			}
+		}
+		
+		if(sand[3] > 0) {
+			if (t.getY()-1 >= 0 && field[t.getX()] [t.getY() - 1] + sand [3] <= t.getMax()) {
+				value = true;
+			} else {
+				return false;
+			}
+		}
+		
+		return value;
 	}
 	
 	public static State copyState(State st, Action ac, int [][] new_field) {
