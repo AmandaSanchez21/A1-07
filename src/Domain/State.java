@@ -10,9 +10,8 @@ public class State {
 	private int X;
 	private int Y; 
 	private int [][] field;
-	
-	
-	
+	private int value;
+
 	public State() {
 		this.n_rows = 0;
 		this.n_cols = 0;
@@ -23,7 +22,15 @@ public class State {
 		Y = 0;
 	}
 	
+
 	
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
 	
 	public int getN_rows() {
 		return n_rows;
@@ -31,12 +38,14 @@ public class State {
 	public void setN_rows(int n_rows) {
 		this.n_rows = n_rows;
 	}
+	
 	public int getN_cols() {
 		return n_cols;
 	}
 	public void setN_cols(int n_cols) {
 		this.n_cols = n_cols;
 	}
+	
 	public int getK() {
 		return K;
 	}
@@ -236,7 +245,8 @@ public class State {
 	
 	
 	public static int cost (Action ac) {
-		int cost = ac.getSand_e()+ ac.getSand_n() + ac.getSand_s() + ac.getSand_w() + 1;
+		int moved_sand = ac.getSand_e()+ ac.getSand_n() + ac.getSand_s() + ac.getSand_w();
+		int cost =  moved_sand + 1;
 		return cost;
 	}
 	

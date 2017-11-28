@@ -22,7 +22,6 @@ public class Problem {
 			}
 			System.out.println();
 		}
-		
 		List<Action>actions = State.successor(t);
 		List<Movement> movements = State.moveTractor(t);
 		System.out.println();
@@ -45,12 +44,12 @@ public class Problem {
 		
 		String strategy;
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please, enter the strategy\nBFS, DFS, DLS, ILS or UCS ");
+		System.out.println("Please, enter the strategy\nBFS, DFS, DLS, ILS, UCS or A*");
 		strategy = sc.nextLine();
 		strategy = strategy.toUpperCase();
 		
-		while (!strategy.equals("BFS") && !strategy.equals("DFS") && !strategy.equals("DLS") && !strategy.equals("ILS") && !strategy.equals("UCS")) {
-			System.out.println("Please, enter a correct strategy \nBFS, DFS, DLS, ILS or UCS");
+		while (!strategy.equals("BFS") && !strategy.equals("DFS") && !strategy.equals("DLS") && !strategy.equals("ILS") && !strategy.equals("UCS") && !strategy.equals("A*")) {
+			System.out.println("Please, enter a correct strategy \nBFS, DFS, DLS, ILS, UCS or A*");
 			strategy = sc.nextLine().toUpperCase();
 		}
 		
@@ -69,11 +68,11 @@ public class Problem {
 	}
 	
 	
-	public static List<Node> boundedSearch(State st, String strategy, int max_depth) {
+	public static List<Node> boundedSearch(State st, String strategy, int max_depth) throws IOException {
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
 		Node initial_node = new Node(st, 0, 0, null); //Initial node with the initial state, cost and depth are 0 and there's no reference to a parent
 		initial_node.selectValueNode(strategy);
-		frontier.add(initial_node);
+		frontier.offer(initial_node);
 		Node current_node = new Node();
 		
 		boolean solution = false;
@@ -82,25 +81,29 @@ public class Problem {
 		while(!frontier.isEmpty() && solution==false) {
 			current_node = frontier.poll(); //Removes the node which is in the head of the queue
 			
+			
 			if(isGoal(current_node.getState())) {
 				solution = true;
 			} else {
 				List<Action> actions = State.successor(current_node.getState()); //Generates all the possible actions
 				List<Node> nodes = createNodeList(actions, current_node, max_depth, strategy, current_node.getState()); //Creates a node list where each node has a new state, 
 																														//generated after applying the corresponding action
-				
 				for(int i=0; i<nodes.size(); i++) {
-					frontier.add(nodes.get(i));
-				}
+					frontier.offer(nodes.get(i));
+				}	 
 			}
 		}
+		
+		/*for(int i=0; i<frontier.size(); i++) {
+			System.out.print(frontier.remove().getValue());
+		}
+		System.out.println();*/
 		
 		if(solution) {
 			return createSolution(current_node);
 		} else {
 			System.out.println("No solution");
-			return null;
-			
+			return null;	
 		}
 	}
 	
@@ -151,9 +154,8 @@ public class Problem {
 		if(cn.getDepth() + 1 <= depth) {
 			for(int i=0; i<actions.size(); i++) {
 				State c_state = applyAction(st, actions.get(i));
-				Node aux = new Node(c_state, State.cost(actions.get(i)), new_depth, cn);
+				Node aux = new Node(c_state, cn.getCost()+State.cost(actions.get(i)), new_depth, cn);
 				aux.selectValueNode(strategy);
-				System.out.print("Value " + aux.getValue() + "  ");
 				aux.setAction(actions.get(i));
 				nodes.add(aux);
 			}
@@ -184,7 +186,7 @@ public class Problem {
 				node.getState().printField();
 				System.out.println();
 			} else {
-				cost += State.cost(solution.get(i).getAction());
+				cost += State.cost(node.getAction());
 				State st = node.getState();
 				
 				/*System.out.println(node.getAction().getNext_move().getX());
@@ -195,7 +197,7 @@ public class Problem {
 						+ "(" + solution.get(i).getAction().getSand_w() + ", (" + st.getX() + "," + west + "))"
 						+ "(" + solution.get(i).getAction().getSand_e() + ", (" + st.getX() + "," + east + "))]");*/
 				
-				System.out.println(node.getAction().toString());
+				System.out.println(node.getAction().toString() + node.getAction().getNext_move().printMove() + " Cost of Action: " + State.cost(node.getAction()) + " Total cost " + cost);
 				
 				int [][] field = st.getField();
 				

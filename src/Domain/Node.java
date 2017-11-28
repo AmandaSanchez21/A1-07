@@ -14,8 +14,6 @@ public class Node implements Comparable<Node>{
 		this.cost = 0;
 		this.depth = 0;
 		
-		Random rm = new Random();
-		this.value = rm.nextInt(10000) + 1;
 	}
 	
 	
@@ -27,6 +25,7 @@ public class Node implements Comparable<Node>{
 		this.cost = cost;
 		this.depth = depth;
 		this.father = father;
+
 	}
 
 
@@ -94,9 +93,25 @@ public class Node implements Comparable<Node>{
 			this.value = this.depth * -1;
 		} else if (strategy.equals("UCS")) {
 			this.value = this.cost;
+		} else if (strategy.equals("A*")) {
+			this.value = cost + heuristic(this.state);
 		}
 	}
-
+	
+	public int heuristic(State st) {
+		int h=0;
+		int [][] field = st.getField();
+		
+		
+		for (int i=0; i<field.length; i++) {
+			for (int j=0; j<field.length; j++) {
+				if(field[i][j] != st.getK()) {
+					h++;
+				}
+			}
+		}
+		return h;
+	}
 	
 	
 	public int compareTo (Node n) {
@@ -106,7 +121,6 @@ public class Node implements Comparable<Node>{
 			return 1;
 		}
 	}
-	
 	
 	
 

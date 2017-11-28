@@ -25,7 +25,7 @@ public class Movement {
 	}	
 	
 	
-	public void printMove() {
-		System.out.println("[" + X + "," + Y + "]");
+	public String printMove() {
+		return "[" + X + "," + Y + "]";
 	}
 }
