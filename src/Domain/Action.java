@@ -1,5 +1,6 @@
 package Domain;
 public class Action {
+
 	private Movement next_move;
 	private int sand_n, sand_s, sand_w, sand_e;
 	
@@ -51,4 +52,14 @@ public class Action {
 		this.sand_e = sand_e;
 	}
 	
+	
+	
+	
+	@Override
+	public String toString() {
+		return "Action [sand_n=" + sand_n + ", sand_s=" + sand_s + ", sand_w=" + sand_w
+				+ ", sand_e=" + sand_e + "]";
+	}
+	
+
 }
