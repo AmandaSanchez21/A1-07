@@ -98,7 +98,12 @@ public class Problem {
 		Node current_node = new Node();
 		
 		Hashtable<String, Integer> visited = new Hashtable<String, Integer>();
-		visited.put(encriptaEnMD5(initial_node.getState()), initial_node.getValue());
+		
+		if (strategy.equals("BFS") || strategy.equals("DFS") || strategy.equals("DLS") || strategy.equals("ILS")) {
+			visited.put(encriptaEnMD5(initial_node.getState()), initial_node.getCost());
+		} else {
+			visited.put(encriptaEnMD5(initial_node.getState()), initial_node.getValue());
+		}
 		
 		boolean solution = false;
 
@@ -115,7 +120,7 @@ public class Problem {
 																														//generated after applying the corresponding action
 				
 				if(opt) {
-					checkVisited(nodes,visited);
+					checkVisited(nodes,visited, strategy);
 				}
 				
 				
@@ -161,12 +166,18 @@ public class Problem {
 	}*/
 	
 	
-	public static void checkVisited (List<Node> nodes, Hashtable<String, Integer> visited) {
+	public static void checkVisited (List<Node> nodes, Hashtable<String, Integer> visited, String strategy) {
 		for (int i=0; i<nodes.size(); i++) {
 			if (visited.containsKey(encriptaEnMD5(nodes.get(i).getState()))) {
 				if(nodes.get(i).getValue() < visited.get(encriptaEnMD5(nodes.get(i).getState()))) {
 					visited.replace((encriptaEnMD5(nodes.get(i).getState())), nodes.get(i).getValue());
 					nodes.remove(i);
+				}
+			} else {
+				if (strategy.equals("BFS") || strategy.equals("DFS") || strategy.equals("DLS") || strategy.equals("ILS")) {
+					visited.put(encriptaEnMD5(nodes.get(i).getState()), nodes.get(i).getCost());
+				} else {
+					visited.put(encriptaEnMD5(nodes.get(i).getState()), nodes.get(i).getValue());
 				}
 			}
 		}
