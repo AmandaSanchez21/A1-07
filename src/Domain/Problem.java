@@ -12,8 +12,7 @@ public class Problem {
 
 	private static int spatial_complexity;
 	private static long time_complexity;
-	private static Hashtable<String,Integer> visited = new Hashtable<String, Integer>();;
-	private static final char[] CONSTS_HEX = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	private static Hashtable<String,Integer> visited = new Hashtable<String, Integer>();
 
 	public static void main(String[] args) throws IOException, InputExceptions {
 		State t = new State();
@@ -29,7 +28,7 @@ public class Problem {
 			}
 			System.out.println();
 		}
-
+		
 		String strategy;
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
@@ -288,31 +287,17 @@ public class Problem {
 		System.out.println("The total cost is " + cost + " and the total depth is " + solution.get(0).getDepth() 
 				+ "\nSpatial complexity: " + spatial_complexity + ". Time complexity: " + time + " seconds.");
 	}
-
+	
 	public static String encryptState(State st) {
-		try {
-			int message = st.getK() + st.getMax() + st.getN_cols() + st.getN_rows() + st.getX() + st.getY();
-			for (int i = 0; i < st.getField().length; i++) {
-				for (int j = 0; j < st.getField().length; j++) {
-					message += st.getField()[i][j];
-				}
+		
+		String key = "$"+ Integer.toString(st.getX()) + Integer.toString(st.getY());
+		
+		for (int i = 0; i < st.getField().length; i++) {
+			for (int j = 0; j < st.getField().length; j++) {
+				key += Integer.toString(st.getField()[i][j]);
 			}
-			MessageDigest msgd = MessageDigest.getInstance("MD5");
-			byte[] bytes = msgd.digest(intToByteArray(message));
-			StringBuilder strbCadenaMD5 = new StringBuilder(2 * bytes.length);
-			for (int i = 0; i < bytes.length; i++) {
-				int bajo = (int) (bytes[i] & 0x0f);
-				int alto = (int) ((bytes[i] & 0xf0) >> 4);
-				strbCadenaMD5.append(CONSTS_HEX[alto]);
-				strbCadenaMD5.append(CONSTS_HEX[bajo]);
-			}
-			return strbCadenaMD5.toString();
-		} catch (NoSuchAlgorithmException e) {
-			return null;
 		}
-	}
-
-	public static final byte[] intToByteArray(int value) {
-		return new byte[] { (byte) (value >>> 24), (byte) (value >>> 16), (byte) (value >>> 8), (byte) value };
+		
+		return key;
 	}
 }
