@@ -91,6 +91,13 @@ public class State {
 		this.field = field;
 	}
 
+	/**
+	 * Method name: moveTractor Method Description: method that is going to return a list with the possible movements of the tractor.
+	 * 
+	 * @param t: state containing the necessary information to generate the movements.
+	 * @return the list of possible movements.
+	 */
+
 	public static List<Movement> moveTractor(State t) {
 		List<Movement> pos_moves = new ArrayList<Movement>();
 
@@ -121,85 +128,45 @@ public class State {
 	}
 	
 	
-	/*public static List<Action> successor(State t) {
-		List<Movement> moves = State.moveTractor(t);
-		List<Action> actions = new ArrayList<Action>();
-		List<int[]> combinations = generate_combinations(t.getMax());
-		
-		int [][] field = t.getField();
-		int [] aux = new int[4];
-		int sand = 0;
-		
-		for (int i=0; i<moves.size(); i++) {
-			for (int j=0; j<combinations.size(); j++) {
-				int sum_sand = 0;
-				
-				for (int s=0; s<4; s++) {
-					aux = combinations.get(j);
-					sum_sand = sum_sand + aux[s];
-				}
-		
-				if (field[t.getX()][t.getY()] - t.getK() > 0) {
-					sand = field[t.getX()][t.getY()] - t.getK();
-			
-					if(sum_sand==sand) { 
-						if (move_Sand(t,aux)) {
-							Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
-							Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
-							actions.add(ac);
-						}
-					}
-				}
-			}
-			
-			if (field[t.getX()][t.getY()] - t.getK() < 0) {
-				Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
-				Action ac = new Action (mv, 0, 0, 0, 0);
-				actions.add(ac);
-			}
-		}
-		return actions;
-	}*/
+	
+	/**
+	 * Method name: successor
+	 * Method Description: method in charge of generating all the possible actions for a given state.
+	 * @param t: state that determines what actions can and cannot be taken.
+	 * @return the list of possible actions. 
+	 */
 
 	public static List<Action> successor(State t) {
 		List<Movement> moves = State.moveTractor(t);
 		List<Action> actions = new ArrayList<Action>();
-		int [][] field = t.getField();
+		int[][] field = t.getField();
 		int sand = field[t.getX()][t.getY()] - t.getK();
-		if(sand<0) {
-			sand=0;
+		if (sand < 0) {
+			sand = 0;
 		}
 		List<int[]> combinations = generate_combinations(sand);
-		
-		int [] aux = new int[4];
-		
-		for (int i=0; i<moves.size(); i++) {
-			for (int j=0; j<combinations.size(); j++) {
+
+		int[] aux = new int[4];
+
+		for (int i = 0; i < moves.size(); i++) {
+			for (int j = 0; j < combinations.size(); j++) {
 				int sum_sand = 0;
-				
-				for (int s=0; s<4; s++) {
+
+				for (int s = 0; s < 4; s++) {
 					aux = combinations.get(j);
 					sum_sand = sum_sand + aux[s];
 				}
-		
-				/*if (field[t.getX()][t.getY()] - t.getK() > 0) {
-					sand = field[t.getX()][t.getY()] - t.getK();*/
-			
-					if(sum_sand==sand) { 
-						if (move_Sand(t,aux)) {
-							Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
-							Action ac = new Action (mv, aux[0], aux[1], aux[2], aux[3]);
-							actions.add(ac);
-						}
+
+				if (sum_sand == sand) {
+					if (move_Sand(t, aux)) {
+						Movement mv = new Movement(moves.get(i).getX(), moves.get(i).getY());
+						Action ac = new Action(mv, aux[0], aux[1], aux[2], aux[3]);
+						actions.add(ac);
 					}
-				//}
+				}
+
 			}
-			
-			/*if (field[t.getX()][t.getY()] - t.getK() < 0) {
-				Movement mv = new Movement (moves.get(i).getX(), moves.get(i).getY());
-				Action ac = new Action (mv, 0, 0, 0, 0);
-				actions.add(ac);
-			}*/
+
 		}
 		return actions;
 	}
@@ -210,6 +177,12 @@ public class State {
 				+ ", field=" + Arrays.toString(field) + "]";
 	}
 
+	/**
+	 * Method name: generate_combinations
+	 * Method description: method that generates a list of the possible combinations of sand for an action
+	 * @param max: the maximum amount of sand that can be moved.
+	 * @return the list of possible combinations.
+	 */
 	public static List<int[]> generate_combinations(int max) {
 		List<int[]> combinations = new ArrayList<int[]>();
 
@@ -226,6 +199,14 @@ public class State {
 		return combinations;
 	}
 
+	
+	/**
+	 * Method name: moveSand
+	 * Method Description: method to check if it is possible to move a determined amount of sand to N,E,W or S.
+	 * @param t: State that determines if the sand can or cannot be moved.
+	 * @param sand: array containing how much sand is going to be moved to N,E,W and S.
+	 * @return true if is possible to move sand, false otherwise. 
+	 */
 	public static boolean move_Sand(State t, int[] sand) {
 		int[][] field = t.getField();
 		boolean value = true;
@@ -278,6 +259,15 @@ public class State {
 
 		return newState;
 	}
+	
+	
+	
+	/**
+	 * Method name: cost
+	 * Method Description: method responsible for computing the cost of a given action. 
+	 * @param ac: the action whose cost has to be determined. 
+	 * @return the cost of the action. 
+	 */
 
 	public static int cost(Action ac) {
 		int moved_sand = ac.getSand_e() + ac.getSand_n() + ac.getSand_s() + ac.getSand_w();

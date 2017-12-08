@@ -16,9 +16,6 @@ public class Node implements Comparable<Node>{
 		
 	}
 	
-	
-	
-	
 	public Node(State state, int cost, int depth, Node father) {
 		super();
 		this.state = state;
@@ -27,9 +24,6 @@ public class Node implements Comparable<Node>{
 		this.father = father;
 
 	}
-
-
-
 
 	public State getState() {
 		return state;
@@ -85,7 +79,11 @@ public class Node implements Comparable<Node>{
 	}
 	
 	
-	
+	/**
+	 * Method name: selectValueNode
+	 * Method Description: method that is going to assign the appropriate value to a node depending on the chosen strategy.
+	 * @param strategy: strategy used to find the solution.
+	 */
 	public void selectValueNode(String strategy) {
 		if(strategy.equals("BFS")) {
 			this.value = this.depth;
@@ -98,6 +96,13 @@ public class Node implements Comparable<Node>{
 		}
 	}
 	
+	
+	/**
+	 * Method name: heuristic
+	 * Method Description: method that is going to compute the heuristic for a given state.
+	 * @param st: state used to compute the heuristic.
+	 * @return the value of the heuristic.
+	 */
 	public int heuristic(State st) {
 		int h=0;
 		int [][] field = st.getField();

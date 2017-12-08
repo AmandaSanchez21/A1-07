@@ -1,3 +1,9 @@
+/***
+ * Class Name: Problem
+ * Class Authors: Amanda Sánchez García & Fernando Velasco Alba
+ * Class Description: Class that implements the main functionality of the program
+ */
+
 package Domain;
 
 import java.io.*;
@@ -13,6 +19,14 @@ public class Problem {
 	private static int spatial_complexity;
 	private static long time_complexity;
 	private static Hashtable<String,Integer> visited = new Hashtable<String, Integer>();
+	
+	/**
+	 * Method name: main
+	 * Method Description: method where the initial state is read from a file and where the different options to execute the program are captured.
+	 * @param args
+	 * @throws IOException
+	 * @throws InputExceptions
+	 */
 
 	public static void main(String[] args) throws IOException, InputExceptions {
 		State t = new State();
@@ -88,6 +102,18 @@ public class Problem {
 		}
 
 	}
+	
+	
+	/**
+	 * Method name: boundedSearch
+	 * Method Description: method in charge of executing the main functionality of the program, which is look for a solution for the given field. 
+	 * @param st: initial state containing the necessary information to look for a solution.
+	 * @param strategy: strategy used in order to find the solution.
+	 * @param max_depth: the maximum depth that is going to be used to look for the solution.
+	 * @param opt: boolean indicating if the user wants to look for the solution using optimization or not.
+	 * @return solution: list of nodes which leads to the solution.
+	 * @throws IOException
+	 */
 
 	public static List<Node> boundedSearch(State st, String strategy, int max_depth, boolean opt) throws IOException {
 		PriorityQueue<Node> frontier = new PriorityQueue<Node>();
@@ -98,7 +124,6 @@ public class Problem {
 		spatial_complexity = 1;
 		Node current_node = new Node();
 
-		//Hashtable<String, Integer> visited = new Hashtable<String, Integer>();
 
 		if (strategy.equals("BFS") || strategy.equals("DFS") || strategy.equals("DLS") || strategy.equals("IDS")) {
 			visited.put(encryptState(initial_node.getState()), initial_node.getCost());
@@ -120,7 +145,7 @@ public class Problem {
 																														//generated after applying the corresponding action
 
 				if (opt) {
-					checkVisited(nodes, visited, strategy);
+					checkVisited(nodes, strategy);
 				}
 
 				for (int i = 0; i < nodes.size(); i++) {
@@ -137,8 +162,16 @@ public class Problem {
 			return null;
 		}
 	}
+	
+	
+	/**
+	 * Method name: checkVisited
+	 * Method Description: method used in the optimized version of the program in order to check if a state has been previously visited.
+	 * @param nodes: list of nodes, which include the states that have to be checked. 
+	 * @param strategy: strategy that is going to be used to find the solution. 
+	 */
 
-	public static void checkVisited(List<Node> nodes, Hashtable<String, Integer> visited, String strategy) {
+	public static void checkVisited(List<Node> nodes, String strategy) {
 		for (int i = 0; i < nodes.size(); i++) {
 			if (visited.containsKey(encryptState(nodes.get(i).getState()))) {
 				if (strategy.equals("BFS") || strategy.equals("DFS") || strategy.equals("DLS") || strategy.equals("IDS")) {
@@ -164,6 +197,13 @@ public class Problem {
 		}
 	}
 
+	
+	/**
+	 * Method name: isGoal
+	 * Method description: method that check if an state is the goal state. 
+	 * @param st: state which has to be checked. 
+	 * @return true if the state is a goal state, false otherwise.
+	 */
 	public static boolean isGoal(State st) {
 		int[][] field = st.getField();
 
@@ -176,6 +216,15 @@ public class Problem {
 		}
 		return true;
 	}
+	
+	
+	/**
+	 * Method name: applyAction
+	 * Method Description: method which generates a new state after applying an action previously generated. 
+	 * @param st: state on which the action should be applied.
+	 * @param ac: action to be applied.
+	 * @return the new State generated.
+	 */
 
 	public static State applyAction(State st, Action ac) {
 
@@ -207,6 +256,17 @@ public class Problem {
 		return newState;
 	}
 
+	
+	/**
+	 * Method name: createNodeList
+	 * Method Description: method which generates the list of nodes resulting after applying all the possible actions for a state.
+	 * @param actions: list of actions which are going to be applied.
+	 * @param cn: current node, which is going to be the parent of the nodes generated. 
+	 * @param depth: maximum depth to look for the solution. 
+	 * @param strategy: strategy used to find the solution.
+	 * @param st: State on which the actions should be applied. 
+	 * @return list of nodes generated.
+	 */
 	public static List<Node> createNodeList(List<Action> actions, Node cn, int depth, String strategy, State st) {
 		List<Node> nodes = new ArrayList<Node>();
 		int new_depth = cn.getDepth() + 1;
@@ -224,6 +284,13 @@ public class Problem {
 		return nodes;
 	}
 
+	
+	/**
+	 * Method name: createSolution
+	 * Method Description: method which is going to return the list of nodes that leads to the solution. 
+	 * @param current_node: node in which the solution is found.
+	 * @return the list of nodes leading to the solution.
+	 */
 	public static List<Node> createSolution(Node current_node) {
 		List<Node> solution = new ArrayList<Node>();
 
@@ -235,15 +302,13 @@ public class Problem {
 		return solution;
 	}
 
-	/*
-	 * public static void checkVisited (List<Node> nodes, Hashtable<State, Integer>
-	 * visited) { for (int i=0; i<nodes.size(); i++) { State st =
-	 * nodes.get(i).getState();
-	 * 
-	 * if(visited.containsKey(st)) { if(nodes.get(i).getValue() < visited.get() } }
-	 * }
-	 */
 
+	
+	/**
+	 * Method name: printSolution
+	 * Method Description: method which is responsible of printing the solution of the problem.
+	 * @param solution: list of nodes which leads to the solution.
+	 */
 	public static void printSolution(List<Node> solution) {
 		int cost = 0;
 		for (int i = solution.size() - 1; i >= 0; i--) {
@@ -257,17 +322,17 @@ public class Problem {
 				cost += State.cost(node.getAction());
 				State st = node.getState();
 
-				/*
-				 * System.out.println(node.getAction().getNext_move().getX());
-				 * System.out.println(node.getAction().getNext_move().getY()); int north =
-				 * st.getX()-1, south = st.getX()+1, east = st.getY()+1, west = st.getY()-1;
-				 * System.out.println("Action: [(" + solution.get(i).getAction().getSand_n() +
-				 * ", (" + st.getX() + "," + st.getY() + ")) ," + "(" +
-				 * solution.get(i).getAction().getSand_s() + ", (" + st.getX()+ "," + st.getY()
-				 * + "))" + "(" + solution.get(i).getAction().getSand_w() + ", (" + st.getX() +
-				 * "," + west + "))" + "(" + solution.get(i).getAction().getSand_e() + ", (" +
-				 * st.getX() + "," + east + "))]");
-				 */
+				
+				/* System.out.println(node.getAction().getNext_move().getX());
+				  System.out.println(node.getAction().getNext_move().getY()); int north =
+				  st.getX()-1, south = st.getX()+1, east = st.getY()+1, west = st.getY()-1;
+				  System.out.println("Action: [(" + solution.get(i).getAction().getSand_n() +
+				  ", (" + st.getX() + "," + st.getY() + ")) ," + "(" +
+				  solution.get(i).getAction().getSand_s() + ", (" + st.getX()+ "," + st.getY()
+				  + "))" + "(" + solution.get(i).getAction().getSand_w() + ", (" + st.getX() +
+				  "," + west + "))" + "(" + solution.get(i).getAction().getSand_e() + ", (" +
+				  st.getX() + "," + east + "))]");*/
+				 
 
 				System.out.println(node.getAction().toString() + " Next move: " + node.getAction().getNext_move().printMove()
 						+ " Cost of Action: " + State.cost(node.getAction()) + " Total cost " + cost);
@@ -287,6 +352,14 @@ public class Problem {
 		System.out.println("The total cost is " + cost + " and the total depth is " + solution.get(0).getDepth() 
 				+ "\nSpatial complexity: " + spatial_complexity + ". Time complexity: " + time + " seconds.");
 	}
+	
+	
+	/**
+	 * Method name: encryptState
+	 * Method Description: method in charge of encrypting a given state.
+	 * @param st: State to be encrypted. 
+	 * @return the String which is the key of the encrypted State. 
+	 */
 	
 	public static String encryptState(State st) {
 		
