@@ -318,6 +318,8 @@ public class Problem {
 				System.out.println("Initial Field: ");
 				node.getState().printField();
 				System.out.println();
+				System.out.println("Initial Position: (" + node.getState().getX() + ", " + node.getState().getY() + ")");
+				System.out.println();
 			} else {
 				cost += State.cost(node.getAction());
 				State st = node.getState();
