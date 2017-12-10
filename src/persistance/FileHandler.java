@@ -100,6 +100,9 @@ public class FileHandler {
 						}
 						fw.write(System.getProperty("line.separator"));
 					}
+					fw.write(System.getProperty("line.separator"));
+					fw.write("Initial Position: (" + node.getState().getX() + ", " + node.getState().getY() + ")");
+					fw.write(System.getProperty("line.separator"));
 				} else {
 					cost += State.cost(node.getAction());
 					State st = node.getState();
