@@ -171,12 +171,6 @@ public class State {
 		return actions;
 	}
 
-	@Override
-	public String toString() {
-		return "State [n_rows=" + n_rows + ", n_cols=" + n_cols + ", K=" + K + ", max=" + max + ", X=" + X + ", Y=" + Y
-				+ ", field=" + Arrays.toString(field) + "]";
-	}
-
 	/**
 	 * Method name: generate_combinations
 	 * Method description: method that generates a list of the possible combinations of sand for an action
