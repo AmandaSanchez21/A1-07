@@ -8,6 +8,7 @@ import Domain.State;
 
 public class FileHandler {
 	public static void readFile(State t) throws IOException, InputExceptions {
+		@SuppressWarnings("resource")
 		Scanner read = new Scanner(System.in);
 		System.out.println("Enter the name of the .txt");
 		String file = read.nextLine() + ".txt";

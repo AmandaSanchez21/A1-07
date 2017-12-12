@@ -1,6 +1,10 @@
 package persistance;
 
 public class InputExceptions extends Exception {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String type;
 	public InputExceptions(String type) {
 		this.type = type;
