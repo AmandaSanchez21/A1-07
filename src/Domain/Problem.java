@@ -106,18 +106,10 @@ public class Problem {
 	 * Method name: boundedSearch Method Description: method in charge of executing
 	 * the main functionality of the program, which is look for a solution for the
 	 * given field.
-	 * 
-	 * @param st:
-	 *            initial state containing the necessary information to look for a
-	 *            solution.
-	 * @param strategy:
-	 *            strategy used in order to find the solution.
-	 * @param max_depth:
-	 *            the maximum depth that is going to be used to look for the
-	 *            solution.
-	 * @param opt:
-	 *            boolean indicating if the user wants to look for the solution
-	 *            using optimization or not.
+	 * @param st: initial state containing the necessary information to look for a solution.
+	 * @param strategy: strategy used in order to find the solution.
+	 * @param max_depth: the maximum depth that is going to be used to look for the solution.
+	 * @param opt: boolean indicating if the user wants to look for the solution using optimization or not.
 	 * @return solution: list of nodes which leads to the solution.
 	 * @throws IOException
 	 */
@@ -146,24 +138,9 @@ public class Problem {
 				solution = true;
 			} else {
 				List<Action> actions = State.successor(current_node.getState()); // Generates all the possible actions
-				List<Node> nodes = createNodeList(actions, current_node, max_depth, strategy, current_node.getState()); // Creates
-																														// a
-																														// node
-																														// list
-																														// where
-																														// each
-																														// node
-																														// has
-																														// a
-																														// new
-																														// state,
-																														// generated
-																														// after
-																														// applying
-																														// the
-																														// corresponding
+				List<Node> nodes = createNodeList(actions, current_node, max_depth, strategy, current_node.getState()); // Creates a node list where each node
+																														// has a new state, generated after applying the corresponding
 																														// action
-
 				if (opt) {
 					checkVisited(nodes, strategy);
 				}
@@ -187,11 +164,8 @@ public class Problem {
 	 * Method name: checkVisited Method Description: method used in the optimized
 	 * version of the program in order to check if a state has been previously
 	 * visited.
-	 * 
-	 * @param nodes:
-	 *            list of nodes, which include the states that have to be checked.
-	 * @param strategy:
-	 *            strategy that is going to be used to find the solution.
+	 * @param nodes: list of nodes, which include the states that have to be checked.
+	 * @param strategy: strategy that is going to be used to find the solution.
 	 */
 
 	public static void checkVisited(List<Node> nodes, String strategy) {
@@ -225,9 +199,7 @@ public class Problem {
 	/**
 	 * Method name: isGoal Method description: method that check if an state is the
 	 * goal state.
-	 * 
-	 * @param st:
-	 *            state which has to be checked.
+	 * @param st: state which has to be checked.
 	 * @return true if the state is a goal state, false otherwise.
 	 */
 	public static boolean isGoal(State st) {
@@ -246,11 +218,8 @@ public class Problem {
 	/**
 	 * Method name: applyAction Method Description: method which generates a new
 	 * state after applying an action previously generated.
-	 * 
-	 * @param st:
-	 *            state on which the action should be applied.
-	 * @param ac:
-	 *            action to be applied.
+	 * @param st: state on which the action should be applied.
+	 * @param ac: action to be applied.
 	 * @return the new State generated.
 	 */
 
@@ -258,8 +227,7 @@ public class Problem {
 
 		int[][] newField = st.getField();
 		int pos = newField[st.getX()][st.getY()]; // Amount of sand in the current position
-		int movedSand = ac.getSand_e() + ac.getSand_n() + ac.getSand_s() + ac.getSand_w(); // Totally amount of sand to
-																							// move
+		int movedSand = ac.getSand_e() + ac.getSand_n() + ac.getSand_s() + ac.getSand_w(); // Totally amount of sand to move
 		int newPos = pos - movedSand;
 		newField[st.getX()][st.getY()] = newPos; // Remaining sand in the current position
 		/*
@@ -287,7 +255,6 @@ public class Problem {
 	/**
 	 * Method name: createNodeList Method Description: method which generates the
 	 * list of nodes resulting after applying all the possible actions for a state.
-	 * 
 	 * @param actions:list of actions which are going to be applied.
 	 * @param cn:current node, which is going to be the parent of the nodes generated.
 	 * @param depth:maximum depth to look for the solution.
