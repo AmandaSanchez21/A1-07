@@ -107,18 +107,11 @@ public class FileHandler {
 				} else {
 					cost += State.cost(node.getAction());
 					State st = node.getState();
-					
-					int north = st.getX() - 1, south = st.getX()+1, east = st.getY() + 1, west = st.getY() - 1;
-					north = (north>=0) ? st.getX()-1 : 0; 
-					south = (south<st.getN_rows()) ? st.getX()+1 : st.getN_rows();
-					east = (east<st.getN_cols()) ? st.getY()+1 : st.getN_cols();
-					west = (west>=0) ? st.getY()-1 : 0;
+
 			
 					fw.write(System.getProperty("line.separator"));
-					fw.write("([" + node.getAction().getNext_move().getX() + " ," + node.getAction().getNext_move().getY() + 
-							"], [(" + node.getAction().getSand_n() + ", (" + north + ", " + st.getY() + ")) ," + "(" + node.getAction().getSand_s() +
-							", (" + south + "," + st.getY() + ")), (" + node.getAction().getSand_e() + ", (" + st.getX() + ", " + east + ")), (" +
-							node.getAction().getSand_w() + ", (" + st.getX() + ", " + west + "))], " + State.cost(node.getAction()) + ")");
+					fw.write(node.getAction().toString() + " Next move: " + node.getAction().getNext_move().printMove()
+							+ " Cost of Action: " + State.cost(node.getAction()) + " Total cost: " + cost);
 					
 					fw.write(System.getProperty("line.separator"));
 					
