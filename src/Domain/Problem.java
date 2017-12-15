@@ -42,6 +42,7 @@ public class Problem {
 			}
 			System.out.println();
 		}
+	
 		System.out.println();
 		String strategy;
 		@SuppressWarnings("resource")
@@ -51,7 +52,7 @@ public class Problem {
 		strategy = strategy.toUpperCase();
 
 		while (!strategy.equals("BFS") && !strategy.equals("DFS") && !strategy.equals("DLS") && !strategy.equals("IDS")
-				&& !strategy.equals("UCS") && !strategy.equals("A*")) {
+				&& !strategy.equals("UCS") && !strategy.equals("A*") ) {
 			System.out.println("Please, enter a correct strategy \nBFS, DFS, DLS, IDS, UCS or A*");
 			strategy = sc.nextLine().toUpperCase();
 		}
@@ -101,6 +102,7 @@ public class Problem {
 		}
 
 	}
+	
 
 	/**
 	 * Method name: boundedSearch Method Description: method in charge of executing
@@ -180,7 +182,7 @@ public class Problem {
 					}
 				} else {
 					if (nodes.get(i).getValue() < visited.get(encryptState(nodes.get(i).getState()))) {
-						visited.replace((encryptState(nodes.get(i).getState())), nodes.get(i).getValue());
+						visited.replace((encryptState(nodes.get(i).getState())),nodes.get(i).getValue());
 					} else {
 						nodes.remove(i);
 					}
@@ -190,7 +192,7 @@ public class Problem {
 						|| strategy.equals("IDS")) {
 					visited.put(encryptState(nodes.get(i).getState()), nodes.get(i).getCost());
 				} else {
-					visited.put(encryptState(nodes.get(i).getState()), nodes.get(i).getValue());
+					visited.put(encryptState(nodes.get(i).getState()),nodes.get(i).getValue());
 				}
 			}
 		}
@@ -270,7 +272,6 @@ public class Problem {
 				State c_state = applyAction(st, actions.get(i));
 				Node aux = new Node(c_state, cn.getCost() + State.cost(actions.get(i)), new_depth, cn);
 				aux.selectValueNode(strategy);
-				aux.getState().setValue(aux.getValue());
 				aux.setAction(actions.get(i));
 				nodes.add(aux);
 			}
@@ -315,7 +316,8 @@ public class Problem {
 			} else {
 				cost += State.cost(node.getAction());
 				State st = node.getState();
-
+				System.out.println("heuristic" + node.heuristic(st));
+				System.out.println("cost" + node.getCost());
 				System.out.println(node.getAction().toString() + " Next move: " + node.getAction().getNext_move().printMove()
 								+ " Cost of Action: " + State.cost(node.getAction()) + " Total cost: " + cost);
 

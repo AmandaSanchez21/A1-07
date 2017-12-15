@@ -10,7 +10,7 @@ public class State {
 	private int X;
 	private int Y;
 	private int[][] field;
-	private int value;
+	private double value;
 
 	public State() {
 		this.n_rows = 0;
@@ -21,12 +21,12 @@ public class State {
 		Y = 0;
 	}
 
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
-		this.value = value;
+	public void setValue(double d) {
+		this.value = d;
 	}
 
 	public int getN_rows() {
@@ -97,33 +97,30 @@ public class State {
 	 * @param t: state containing the necessary information to generate the movements.
 	 * @return the list of possible movements.
 	 */
-
+	
 	public static List<Movement> moveTractor(State t) {
 		List<Movement> pos_moves = new ArrayList<Movement>();
+		
+		if (t.getX() - 1 >= 0) { //NORTH
+			Movement n = new Movement(t.getX() - 1, t.getY());
+			pos_moves.add(n);
+		}	
 
-		if (0 <= t.getX() && t.getX() < t.getN_rows()) {
-			if (t.getX() + 1 < t.getN_rows()) {
-				Movement s = new Movement(t.getX() + 1, t.getY());
-				pos_moves.add(s);
-			}
-
-			if (t.getX() - 1 >= 0) {
-				Movement n = new Movement(t.getX() - 1, t.getY());
-				pos_moves.add(n);
-			}
+		if (t.getY() - 1 >= 0) { //WEST
+			Movement w = new Movement(t.getX(), t.getY() - 1);
+			pos_moves.add(w);
 		}
-
-		if (0 <= t.getY() && t.getY() < t.getN_cols()) {
-			if (t.getY() + 1 < t.getN_cols()) {
-				Movement e = new Movement(t.getX(), t.getY() + 1);
-				pos_moves.add(e);
-			}
-
-			if (t.getY() - 1 >= 0) {
-				Movement w = new Movement(t.getX(), t.getY() - 1);
-				pos_moves.add(w);
-			}
+		
+		if (t.getY() + 1 < t.getN_cols()) { //EAST
+			Movement e = new Movement(t.getX(), t.getY() + 1);
+			pos_moves.add(e);
 		}
+		
+		if (t.getX() + 1 < t.getN_rows()) { //SOUTH
+			Movement s = new Movement(t.getX() + 1, t.getY());
+			pos_moves.add(s);
+		}	
+		
 		return pos_moves;
 	}
 	
@@ -168,6 +165,7 @@ public class State {
 			}
 
 		}
+		
 		return actions;
 	}
 
@@ -205,7 +203,7 @@ public class State {
 		int[][] field = t.getField();
 		boolean value = true;
 
-		if (sand[0] > 0) {
+		if (sand[0] > 0) { //NORTH
 			if (t.getX() - 1 >= 0 && field[t.getX() - 1][t.getY()] + sand[0] <= t.getMax()) {
 				value = true;
 			} else {
@@ -213,15 +211,16 @@ public class State {
 			}
 		}
 
-		if (sand[1] > 0) {
-			if (t.getX() + 1 < field.length && field[t.getX() + 1][t.getY()] + sand[1] <= t.getMax()) {
+		if (sand[1] > 0) { //WEST
+			if (t.getY() - 1 >= 0 && field[t.getX()][t.getY() - 1] + sand[1] <= t.getMax()) {
 				value = true;
 			} else {
 				return false;
 			}
+			
 		}
 
-		if (sand[2] > 0) {
+		if (sand[2] > 0) { //EAST
 			if (t.getY() + 1 < field.length && field[t.getX()][t.getY() + 1] + sand[2] <= t.getMax()) {
 				value = true;
 			} else {
@@ -229,8 +228,8 @@ public class State {
 			}
 		}
 
-		if (sand[3] > 0) {
-			if (t.getY() - 1 >= 0 && field[t.getX()][t.getY() - 1] + sand[3] <= t.getMax()) {
+		if (sand[3] > 0) { //SOUTH
+			if (t.getX() + 1 < field.length && field[t.getX() + 1][t.getY()] + sand[3] <= t.getMax()) {
 				value = true;
 			} else {
 				return false;

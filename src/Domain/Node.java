@@ -3,7 +3,8 @@ package Domain;
 public class Node implements Comparable<Node>{
 
 	private State state;
-	private int cost, depth, value;
+	private int cost, depth;
+	int value;
 	private Action action;
 	private Node father;
 

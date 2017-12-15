@@ -4,7 +4,7 @@ public class Action {
 	private Movement next_move;
 	private int sand_n, sand_s, sand_w, sand_e;
 	
-	public Action (Movement nm, int n, int s, int e, int w) {
+	public Action (Movement nm, int n, int w, int e, int s) {
 		this.next_move = nm;
 		this.sand_s = s;
 		this.sand_n = n;
