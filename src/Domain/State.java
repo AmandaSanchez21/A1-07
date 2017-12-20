@@ -10,7 +10,6 @@ public class State {
 	private int X;
 	private int Y;
 	private int[][] field;
-	private double value;
 
 	public State() {
 		this.n_rows = 0;
@@ -19,14 +18,6 @@ public class State {
 		this.max = 0;
 		X = 0;
 		Y = 0;
-	}
-
-	public double getValue() {
-		return value;
-	}
-
-	public void setValue(double d) {
-		this.value = d;
 	}
 
 	public int getN_rows() {

@@ -316,8 +316,7 @@ public class Problem {
 			} else {
 				cost += State.cost(node.getAction());
 				State st = node.getState();
-				System.out.println("heuristic" + node.heuristic(st));
-				System.out.println("cost" + node.getCost());
+			
 				System.out.println(node.getAction().toString() + " Next move: " + node.getAction().getNext_move().printMove()
 								+ " Cost of Action: " + State.cost(node.getAction()) + " Total cost: " + cost);
 
